@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ProjectApplication</string>
+    <string name="user_name">Email or Phone number</string>
+    <string name="password">Password</string>
+    <string name="loginbtn">Login</string>
+    <string name="registerbtn">Register</string>
+    <string name="fullName">Full Name</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="dob">Day of birth</string>
+    <string name="gender">0: Female, 1: Male</string>
+    <string name="address">Address</string>
+
+</resources>
