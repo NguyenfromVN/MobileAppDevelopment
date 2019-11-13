@@ -3,6 +3,7 @@ package com.example.projectapplication.network;
 import com.example.projectapplication.model.LoginRequest;
 import com.example.projectapplication.model.LoginResponse;
 import com.example.projectapplication.model.RegisterRequest;
+import com.example.projectapplication.model.RegisterResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -13,5 +14,5 @@ public interface UserService {
     Call<LoginResponse> login(@Body LoginRequest request);
 
     @POST("/user/register")
-    Call<LoginResponse> register(@Body RegisterRequest request);
+    Call<RegisterResponse> register(@Body RegisterRequest request);
 }

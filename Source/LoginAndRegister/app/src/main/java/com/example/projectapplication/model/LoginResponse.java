@@ -13,6 +13,7 @@ public class LoginResponse {
     @SerializedName("token")
     String token;
 
+
     public String getUserId() {
         return userId;
     }

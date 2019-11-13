@@ -2,20 +2,27 @@ package com.example.projectapplication.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.projectapplication.R;
+import com.example.projectapplication.model.LoginRequest;
 import com.example.projectapplication.model.RegisterRequest;
+import com.example.projectapplication.model.RegisterResponse;
 import com.example.projectapplication.network.MyAPIClient;
 import com.example.projectapplication.network.UserService;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    public static String TAG  = "RegisterActivity";
     EditText fullName, dob,gender,add,password, email, phone;
     Button reg;
     UserService userService;
@@ -66,7 +73,29 @@ public class RegisterActivity extends AppCompatActivity {
         request.setPassword(pass);
         request.setPhone(phone1);
 
-       userService.register(request);
+        Call<RegisterResponse> call= userService.register(request);
+        call.enqueue(new Callback<RegisterResponse>() {
+            @Override
+            public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
+                if(response.isSuccessful()){
+
+
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    RegisterActivity.this.finish();
+
+                }
+                else{}
+            }
+
+            @Override
+            public void onFailure(Call<RegisterResponse> call, Throwable t) {
+                Log.d(TAG, "onFailure: ");
+            }
+        });
+
 
 
 

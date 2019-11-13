@@ -2,6 +2,7 @@ package com.example.projectapplication.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.app.ProgressDialog;
 import android.app.SharedElementCallback;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.projectapplication.R;
 import com.example.projectapplication.manager.MyApplication;
@@ -22,11 +24,14 @@ import com.example.projectapplication.model.LoginResponse;
 import com.example.projectapplication.network.MyAPIClient;
 import com.example.projectapplication.network.UserService;
 
+import org.json.JSONObject;
+
 import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 
 public class LoginActivity extends AppCompatActivity {
     public static String TAG  = "LoginActivity";
@@ -92,11 +97,24 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if(response.isSuccessful()){
                 MyAPIClient.getInstance().setAccessToken(response.body().getToken());
 
                 //******TOKEN nè
                 String Token = response.body().getToken();
-                //****************
+
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = sharedPref.edit();
+
+                long time = (new Date()).getTime()/1000;
+
+                editor.putString(getString(R.string.saved_access_token),Token);
+                editor.putLong(getString(R.string.saved_access_token_time), time);
+                editor.commit();
+
+                MyApplication app = (MyApplication) LoginActivity.this.getApplication();
+                app.setToken(Token);
+
 
                 Log.d(TAG,Token);
 
@@ -105,7 +123,15 @@ public class LoginActivity extends AppCompatActivity {
 
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-                LoginActivity.this.finish();
+                LoginActivity.this.finish();}
+                else{
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Toast.makeText(LoginActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
 
 
             }
