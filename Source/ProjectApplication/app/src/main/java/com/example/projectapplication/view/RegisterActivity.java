@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.projectapplication.R;
 import com.example.projectapplication.model.LoginRequest;
@@ -15,6 +16,9 @@ import com.example.projectapplication.model.RegisterRequest;
 import com.example.projectapplication.model.RegisterResponse;
 import com.example.projectapplication.network.MyAPIClient;
 import com.example.projectapplication.network.UserService;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,13 +60,13 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void setReg() {
         final String fullname = fullName.getText().toString();
-        final String pass = fullName.getText().toString();
-        final String email1 = fullName.getText().toString();
-        final String add1 = fullName.getText().toString();
-        final String dob1 = fullName.getText().toString();
-        final String phone1 = fullName.getText().toString();
-        final String gender1 = fullName.getText().toString();
-        int gender2 = Integer.parseInt(gender1);
+        final String pass = password.getText().toString();
+        final String email1 = email.getText().toString();
+        final String add1 = add.getText().toString();
+        final String dob1 = dob.getText().toString();
+        final String phone1 = phone.getText().toString();
+        final String gender1 = gender.getText().toString();
+        final int gender2 = Integer.parseInt(gender1);
 
         final RegisterRequest request = new RegisterRequest();
         request.setAddress(add1);
@@ -77,9 +81,9 @@ public class RegisterActivity extends AppCompatActivity {
         call.enqueue(new Callback<RegisterResponse>() {
             @Override
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
-                if(response.isSuccessful()){
+                if(response.code()==200){
 
-
+                    Log.d(TAG, "onResponse: success");
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
 
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -87,12 +91,25 @@ public class RegisterActivity extends AppCompatActivity {
                     RegisterActivity.this.finish();
 
                 }
-                else{}
+                else{try {
+
+                    JSONObject jObjError = new JSONObject(response.errorBody().string());
+                    JSONArray jsonArray = (JSONArray) jObjError.get("message");
+                    String str="";
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = (JSONObject) jsonArray.get(i);
+                        str +=object.getString("msg")+"";
+                    }
+                    Toast.makeText(RegisterActivity.this,str,Toast.LENGTH_LONG).show();
+
+                } catch (Exception e) {
+                    Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }}
             }
 
             @Override
             public void onFailure(Call<RegisterResponse> call, Throwable t) {
-                Log.d(TAG, "onFailure: ");
+                Log.d(TAG, "onFailure: "+t.getMessage());
             }
         });
 

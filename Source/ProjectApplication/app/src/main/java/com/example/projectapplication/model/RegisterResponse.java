@@ -7,13 +7,13 @@ public class RegisterResponse {
     String fullName;
 
     @SerializedName("createdOn")
-    String createdOn;
+    long createdOn;
 
     @SerializedName("dob")
     String dob;
 
     @SerializedName("gender")
-    String gender;
+    int gender;
 
     @SerializedName("password")
     String password;
@@ -41,11 +41,11 @@ public class RegisterResponse {
         this.fullName = fullName;
     }
 
-    public String getCreatedOn() {
+    public long getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(String createdOn) {
+    public void setCreatedOn(long createdOn) {
         this.createdOn = createdOn;
     }
 
@@ -57,11 +57,11 @@ public class RegisterResponse {
         this.dob = dob;
     }
 
-    public String getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 
