@@ -25,9 +25,10 @@ public class MyApplication extends Application {
         editor.commit();
     }
 
-    public void loadToken(){
+    public String loadToken(){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        sharedPref.getString(getString(R.string.saved_token),null);
+        String token=sharedPref.getString(getString(R.string.saved_token),null);
+        return token;
     }
     @Override
     public void onCreate() {

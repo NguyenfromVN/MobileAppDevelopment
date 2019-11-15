@@ -35,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
             finish();
             return;
         }else{
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, ListTours.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
