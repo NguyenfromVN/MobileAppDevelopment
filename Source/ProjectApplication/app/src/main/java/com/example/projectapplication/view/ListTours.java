@@ -2,6 +2,7 @@ package com.example.projectapplication.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +20,6 @@ import com.example.projectapplication.network.MyAPIClient;
 import com.example.projectapplication.network.UserService;
 import com.example.projectapplication.model.Item;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONObject;
 
@@ -69,8 +69,8 @@ public class ListTours extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent reg = new Intent(ListTours.this, CreateTour.class);
+                startActivity(reg);
             }
         });
 
