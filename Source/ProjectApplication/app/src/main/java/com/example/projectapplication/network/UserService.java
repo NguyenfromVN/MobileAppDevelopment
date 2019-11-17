@@ -2,6 +2,8 @@ package com.example.projectapplication.network;
 
 import com.example.projectapplication.model.CreateTourRequest;
 import com.example.projectapplication.model.CreateTourResponse;
+import com.example.projectapplication.model.FbLoginRequest;
+import com.example.projectapplication.model.FbLoginResponse;
 import com.example.projectapplication.model.ListToursResponse;
 import com.example.projectapplication.model.LoginRequest;
 import com.example.projectapplication.model.LoginResponse;
@@ -28,4 +30,7 @@ public interface UserService {
 
     @POST("/tour/create")
     Call<CreateTourResponse> createTour(@Body CreateTourRequest request, @Header("Authorization") String token);
+
+    @POST("/user/login/by-facebook")
+    Call<FbLoginResponse> fbLogin(@Body FbLoginRequest request);
 }
