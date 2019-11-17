@@ -4,40 +4,97 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.LoginActivity">
+    tools:context=".view.LoginActivity"
+    android:background="@drawable/grad_bg"
+
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/fab_margin">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="@dimen/fab_margin"
+            android:text="@string/app_name"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textSize="40sp"
+            app:autoSizeTextType="none"
+            app:fontFamily="sans-serif-black" />
 
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40sp"
+            android:layout_margin="@dimen/fab_margin"
+            android:background="@drawable/et_bg"
             android:ems="10"
             android:hint="@string/user_name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:paddingLeft="@dimen/fab_margin"
+            android:textColorHint="@color/colorAccent" />
 
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40sp"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
             android:autofillHints=""
+            android:background="@drawable/et_bg"
             android:ems="10"
             android:hint="@string/password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:paddingLeft="@dimen/fab_margin"
+            android:textColorHint="@color/colorAccent" />
 
         <Button
             android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/loginbtn" />
+            android:layout_gravity="center"
+            android:background="@drawable/et_bg"
+            android:padding="@dimen/fab_margin"
+            android:text="@string/loginbtn"
+            android:textColor="@color/colorAccent" />
 
-        <Button
-            android:id="@+id/btnReg"
+        <TextView
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/registerbtn" />
+            android:gravity="center"
+            android:padding="@dimen/fab_margin"
+            android:text="or"
+            android:textColor="@color/colorAccent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="9">
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/sign_in_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btnReg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:background="@drawable/btn_bg"
+
+                android:text="@string/registerbtn"
+                android:textColor="@color/colorAccent" />
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

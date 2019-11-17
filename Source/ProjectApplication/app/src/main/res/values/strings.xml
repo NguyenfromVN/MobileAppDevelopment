@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProjectApplication</string>
+    <string name="app_name">Travel Assistant</string>
     <string name="user_name">Email or Phone number</string>
     <string name="password">Password</string>
     <string name="loginbtn">Login</string>
