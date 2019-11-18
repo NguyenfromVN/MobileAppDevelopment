@@ -1,47 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/border_layout"
-    android:layout_margin="5dp"
-    android:padding="5dp">
+    android:paddingBottom="5dp">
 
-    <ImageView
-        android:id="@+id/imageViewAvatar"
-        android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:src="@drawable/sample"
-        android:contentDescription="Avatar for a tour"
-        />
-
-    <TextView
-        android:id="@+id/textViewName"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name"
-        android:textStyle="bold"
-        android:textSize="20sp"/>
+        android:orientation="vertical"
+        android:background="@drawable/border_layout"
+        android:padding="5dp">
 
-    <TextView
-        android:id="@+id/textViewDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Date"
-        android:textSize="16sp"/>
+        <ImageView
+            android:id="@+id/imageViewAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:src="@drawable/sample"
+            android:contentDescription="Avatar for a tour"
+            />
 
-    <TextView
-        android:id="@+id/textViewAdults"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Adults"
-        android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
 
-    <TextView
-        android:id="@+id/textViewCost"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cost"
-        android:textStyle="bold"
-        android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/textViewAdults"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Adults"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/textViewCost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cost"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
 
 </LinearLayout>
