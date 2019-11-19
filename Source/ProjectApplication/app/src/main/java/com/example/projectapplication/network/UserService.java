@@ -5,6 +5,8 @@ import com.example.projectapplication.model.CreateTourResponse;
 import com.example.projectapplication.model.FbLoginRequest;
 import com.example.projectapplication.model.FbLoginResponse;
 import com.example.projectapplication.model.ListToursResponse;
+import com.example.projectapplication.model.LoadListStopPointRequest;
+import com.example.projectapplication.model.LoadListStopPointResponse;
 import com.example.projectapplication.model.LoginRequest;
 import com.example.projectapplication.model.LoginResponse;
 import com.example.projectapplication.model.RegisterRequest;
@@ -33,4 +35,7 @@ public interface UserService {
 
     @POST("/user/login/by-facebook")
     Call<FbLoginResponse> fbLogin(@Body FbLoginRequest request);
+
+    @POST("/tour/suggested-destination-list")
+    Call<LoadListStopPointResponse> loadListStopPoint(@Body LoadListStopPointRequest request, @Header("Authorization") String token);
 }

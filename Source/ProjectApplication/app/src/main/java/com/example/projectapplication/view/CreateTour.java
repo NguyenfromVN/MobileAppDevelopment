@@ -112,47 +112,57 @@ public class CreateTour extends AppCompatActivity {
                 minCost=Integer.parseInt(((EditText)findViewById(R.id.editTextMinCost)).getText().toString());
                 maxCost=Integer.parseInt(((EditText)findViewById(R.id.editTextMaxCost)).getText().toString());
 
-                //create tour request
-                CreateTourRequest request = new CreateTourRequest();
-                request.setName(name);
-                request.setStartDate(startDate);
-                request.setEndDate(endDate);
-                request.setPrivate(isPrivate);
-                request.setAdults(adults);
-                request.setChilds(childs);
-                request.setMinCost(minCost);
-                request.setMaxCost(maxCost);
+                //call add stop points activity
+                Intent addPoints = new Intent(CreateTour.this, AddStopPoint.class);
+                addPoints.putExtra("name",name);
+                addPoints.putExtra("startDate",startDate);
+                addPoints.putExtra("endDate",endDate);
+                addPoints.putExtra("adults",adults);
+                addPoints.putExtra("childs",childs);
+                addPoints.putExtra("minCost",minCost);
+                addPoints.putExtra("maxCost",maxCost);
+                addPoints.putExtra("isPrivate",isPrivate);
+                startActivity(addPoints);
+                finish();
 
-                //load token from shared preferences
-                MyApplication app = (MyApplication) CreateTour.this.getApplication();
-                token=app.loadToken();
-
-                userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
-                Call<CreateTourResponse> call = userService.createTour(request,token);
-
-                call.enqueue(new Callback<CreateTourResponse>() {
-                    @Override
-                    public void onResponse(Call<CreateTourResponse> call, Response<CreateTourResponse> response) {
-                        if(response.isSuccessful()) {
-                            //call add stop point activity
-                            Intent reg = new Intent(CreateTour.this, AddStopPoint.class);
-                            startActivity(reg);
-                            finish();
-                        }
-                        else{
-                            try {
-                                JSONObject jObjError = new JSONObject(response.errorBody().string());
-                                Toast.makeText(CreateTour.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
-                            } catch (Exception e) {
-                                Toast.makeText(CreateTour.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<CreateTourResponse> call, Throwable t) {
-                        Log.d(TAG, t.getMessage());
-                    }
-                });
+//                //create tour request
+//                CreateTourRequest request = new CreateTourRequest();
+//                request.setName(name);
+//                request.setStartDate(startDate);
+//                request.setEndDate(endDate);
+//                request.setPrivate(isPrivate);
+//                request.setAdults(adults);
+//                request.setChilds(childs);
+//                request.setMinCost(minCost);
+//                request.setMaxCost(maxCost);
+//
+//                //load token from shared preferences
+//                MyApplication app = (MyApplication) CreateTour.this.getApplication();
+//                token=app.loadToken();
+//
+//                userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+//                Call<CreateTourResponse> call = userService.createTour(request,token);
+//
+//                call.enqueue(new Callback<CreateTourResponse>() {
+//                    @Override
+//                    public void onResponse(Call<CreateTourResponse> call, Response<CreateTourResponse> response) {
+//                        if(response.isSuccessful()) {
+//                            //if create successfully
+//                        }
+//                        else{
+//                            try {
+//                                JSONObject jObjError = new JSONObject(response.errorBody().string());
+//                                Toast.makeText(CreateTour.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
+//                            } catch (Exception e) {
+//                                Toast.makeText(CreateTour.this, e.getMessage(), Toast.LENGTH_LONG).show();
+//                            }
+//                        }
+//                    }
+//                    @Override
+//                    public void onFailure(Call<CreateTourResponse> call, Throwable t) {
+//                        Log.d(TAG, t.getMessage());
+//                    }
+//                });
             }
         });
     }
