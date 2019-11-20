@@ -4,33 +4,21 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.projectapplication.R;
-import com.example.projectapplication.manager.MyApplication;
-import com.example.projectapplication.model.CreateTourRequest;
-import com.example.projectapplication.model.CreateTourResponse;
-import com.example.projectapplication.network.MyAPIClient;
 import com.example.projectapplication.network.UserService;
-
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CreateTour extends AppCompatActivity {
     //global variables
