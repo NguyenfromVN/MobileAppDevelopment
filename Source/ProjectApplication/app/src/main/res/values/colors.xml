@@ -8,4 +8,7 @@
     <color name="transparent">#00000000</color>
     <color name="gradStart">#52ceff</color>
     <color name="gradStop">#0090c9</color>
+    <style name="AppTheme.WhiteAccent">
+        <item name="colorAccent">@color/white</item> <!-- Whatever color you want-->
+    </style>
 </resources>
