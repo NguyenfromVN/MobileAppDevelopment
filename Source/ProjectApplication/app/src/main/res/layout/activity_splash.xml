@@ -24,12 +24,12 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
-            style="@style/Widget.AppCompat.ProgressBar"
+            style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:theme="@style/AppTheme.WhiteAccent" />
+            android:indeterminateTint="@color/white"
+            android:layout_marginBottom="@dimen/fab_margin" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

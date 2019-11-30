@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 public class StopPoint {
     @SerializedName("id")
     private String id;
+    @SerializedName("name")
+    private String name;
     @SerializedName("address")
     private String address;
     @SerializedName("provinceId")
@@ -25,6 +27,10 @@ public class StopPoint {
     private String avatar;
     @SerializedName("landingTimesOfUser")
     private int landingTimesOfUser;
+
+    public String getName() {
+        return name;
+    }
 
     public String getId() {
         return id;
