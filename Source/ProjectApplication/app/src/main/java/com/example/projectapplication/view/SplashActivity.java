@@ -7,12 +7,19 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Window;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.projectapplication.R;
 import com.example.projectapplication.manager.Constants;
+import com.example.projectapplication.manager.MyApplication;
+import com.example.projectapplication.model.UserInforResponse;
 import com.example.projectapplication.network.MyAPIClient;
+import com.example.projectapplication.network.UserService;
+
+import org.json.JSONObject;
 
 import java.sql.Time;
 import java.util.Date;
@@ -20,10 +27,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Handler;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SplashActivity extends AppCompatActivity {
 
     Timer timer;
     ProgressBar progressBar;
+    UserService userService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +50,7 @@ public class SplashActivity extends AppCompatActivity {
         // Get user info with access token
         long expire = (new Date()).getTime()/1000 - time;
         MyAPIClient.getInstance().setAccessToken(accessToken);
-
         timer = new Timer();
-
 
 
         if (TextUtils.isEmpty(accessToken) || expire > Constants.expire_token) {
@@ -70,5 +80,7 @@ public class SplashActivity extends AppCompatActivity {
             },1000);
         }
     }
+
+
 
 }

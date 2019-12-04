@@ -24,6 +24,7 @@ import com.example.projectapplication.model.FbLoginRequest;
 import com.example.projectapplication.model.FbLoginResponse;
 import com.example.projectapplication.model.LoginRequest;
 import com.example.projectapplication.model.LoginResponse;
+import com.example.projectapplication.model.UserInforResponse;
 import com.example.projectapplication.network.MyAPIClient;
 import com.example.projectapplication.network.UserService;
 import com.facebook.CallbackManager;
@@ -63,8 +64,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-
-
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
 
         // set up
@@ -79,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setPermissions("email");
 
-
+        //------Login by fb-------------
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -115,8 +114,9 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, Token);
 
 
-                            Intent intent = new Intent(LoginActivity.this, ListTours.class);
 
+
+                            Intent intent = new Intent(LoginActivity.this, ListTours.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                             LoginActivity.this.finish();
@@ -177,10 +177,55 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+
+
+        UserService userService;
+        MyApplication app = (MyApplication)LoginActivity.this.getApplication();
+        String token=app.loadToken();
+        Log.d("Token", "loadUserInfor: "+token);
+        userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+
+        Call<UserInforResponse> call = userService.userInfor(token);
+        call.enqueue(new Callback<UserInforResponse>() {
+            @Override
+            public void onResponse(Call<UserInforResponse> call, Response<UserInforResponse> response) {
+                if(response.isSuccessful()){
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString(getString(R.string.saved_name),response.body().getFull_name());
+                    editor.putString(getString(R.string.saved_phone), response.body().getPhone());
+                    editor.putString(getString(R.string.saved_email), response.body().getEmail());
+                    editor.putString(getString(R.string.saved_dob), response.body().getDob());
+                    editor.putLong(getString(R.string.saved_gender), response.body().getGender());
+                    editor.putString(getString(R.string.saved_address), response.body().getAddress());
+                    editor.commit();
+                }
+                else{
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Log.d("UserInfor", "onResponse: "+jObjError.getString("message"));
+                        //Toast.makeText(LoginActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.d("UserInfor", "onResponse: "+e.getMessage());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserInforResponse> call, Throwable t) {
+
+            }
+        });
 
 
 
 
+    }
 
     private void attemptLogin() {
         emailPhone.setError(null);
@@ -248,4 +293,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

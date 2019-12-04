@@ -1,10 +1,12 @@
 package com.example.projectapplication.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -19,6 +21,9 @@ import com.example.projectapplication.adapter.MyCustomListAdapter;
 import com.example.projectapplication.network.MyAPIClient;
 import com.example.projectapplication.network.UserService;
 import com.example.projectapplication.model.Item;
+import com.facebook.login.LoginManager;
+import com.google.android.material.bottomnavigation.BottomNavigationMenu;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONObject;
@@ -48,6 +53,26 @@ public class ListTours extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_tours);
+
+
+        BottomNavigationView bottomNav= (BottomNavigationView) findViewById(R.id.navi);
+
+        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId())
+                {
+                    case R.id.list:
+                         break;
+                    case R.id.setting:
+                        Intent intent = new Intent(ListTours.this, SettingActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        break;
+                }
+                return false;
+            }
+        });
 
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
 

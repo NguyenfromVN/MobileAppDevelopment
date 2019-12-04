@@ -11,7 +11,11 @@ import com.example.projectapplication.model.LoginRequest;
 import com.example.projectapplication.model.LoginResponse;
 import com.example.projectapplication.model.RegisterRequest;
 import com.example.projectapplication.model.RegisterResponse;
+import com.example.projectapplication.model.UpdateInfroRequest;
+import com.example.projectapplication.model.UserInforResponse;
 import com.example.projectapplication.view.CreateTour;
+
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -38,4 +42,11 @@ public interface UserService {
 
     @POST("/tour/suggested-destination-list")
     Call<LoadListStopPointResponse> loadListStopPoint(@Body LoadListStopPointRequest request, @Header("Authorization") String token);
+
+    @GET("/user/info")
+    Call<UserInforResponse> userInfor(@Header("Authorization") String token);
+
+    @POST("user/edit-info")
+    Call<JSONObject> updateInfor(@Header("Authorization") String token, @Body UpdateInfroRequest request);
+
 }
