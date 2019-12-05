@@ -9,11 +9,14 @@ import com.example.projectapplication.model.LoadListStopPointRequest;
 import com.example.projectapplication.model.LoadListStopPointResponse;
 import com.example.projectapplication.model.LoginRequest;
 import com.example.projectapplication.model.LoginResponse;
+import com.example.projectapplication.model.OTPRequest;
+import com.example.projectapplication.model.OTPResponse;
 import com.example.projectapplication.model.RegisterRequest;
 import com.example.projectapplication.model.RegisterResponse;
 import com.example.projectapplication.model.UpdateInfroRequest;
+import com.example.projectapplication.model.UpdatePasswordRequest;
 import com.example.projectapplication.model.UserInforResponse;
-import com.example.projectapplication.view.CreateTour;
+import com.example.projectapplication.model.VerifyOTPRequest;
 
 import org.json.JSONObject;
 
@@ -49,4 +52,12 @@ public interface UserService {
     @POST("user/edit-info")
     Call<JSONObject> updateInfor(@Header("Authorization") String token, @Body UpdateInfroRequest request);
 
+    @POST("user/update-password")
+    Call<JSONObject> updatePassword(@Header("Authorization") String token, @Body UpdatePasswordRequest request);
+
+    @POST("/user/request-otp-recovery")
+    Call<OTPResponse> sendOTP (@Body OTPRequest request);
+
+    @POST("/user/verify-otp-recovery")
+    Call<JSONObject> verifyOTP(@Body VerifyOTPRequest request);
 }

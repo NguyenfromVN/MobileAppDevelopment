@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/grad_bg">
+
+    <EditText
+        android:id="@+id/newPassVerify"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:layout_margin="@dimen/fab_margin"
+        android:background="@drawable/et_bg"
+        android:ems="10"
+        android:hint="New Password"
+        android:inputType="textPassword"
+        android:paddingLeft="@dimen/fab_margin"
+        android:textColorHint="@android:color/white" />
+
+    <EditText
+        android:id="@+id/emailVerify"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:layout_margin="@dimen/fab_margin"
+        android:background="@drawable/et_bg"
+        android:ems="10"
+        android:hint="Verify Code"
+        android:inputType="text"
+        android:paddingLeft="@dimen/fab_margin"
+        android:textColorHint="@android:color/white" />
+</LinearLayout>

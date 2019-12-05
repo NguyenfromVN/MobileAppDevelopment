@@ -17,8 +17,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.UpdatePassActivity"
-            android:label="Update Password"></activity>
+        <activity android:name=".view.ForgotPassActivity"
+            android:label="Forgot Password"></activity>
+        <activity
+            android:name=".view.UpdatePassActivity"
+            android:label="Update Password" />
         <activity
             android:name=".view.EditProfileActivity"
             android:label="Edit Profile"
@@ -69,8 +72,9 @@
             android:name=".view.RegisterActivity"
             android:label="Register"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.ListTours"
-            android:label="List Tours"/>
+        <activity
+            android:name=".view.ListTours"
+            android:label="List Tours" />
         <activity android:name=".view.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

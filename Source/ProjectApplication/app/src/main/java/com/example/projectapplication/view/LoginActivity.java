@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.projectapplication.R;
@@ -55,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     private UserService userService;
     private LoginButton loginButton;
     private CallbackManager callbackManager;
+    private TextView forgotPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         password = (EditText)findViewById(R.id.password);
         login = (Button)findViewById(R.id.btnLogin);
         register = (Button)findViewById(R.id.btnReg);
+        forgotPass = (TextView)findViewById(R.id.twForgotPass);
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -149,7 +152,9 @@ public class LoginActivity extends AppCompatActivity {
                 // App code
             }
         });
-
+        
+        
+        // Đăng ký
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,6 +163,8 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(reg);
             }
         });
+        
+        // Đăng nhập
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,10 +172,22 @@ public class LoginActivity extends AppCompatActivity {
                 attemptLogin();
             }
         });
+        
+        // Quên pass
+        forgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, ForgotPassActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
 
 
 
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -196,6 +215,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putInt(getString(R.string.saved_id), response.body().getId());
                     editor.putString(getString(R.string.saved_name),response.body().getFull_name());
                     editor.putString(getString(R.string.saved_phone), response.body().getPhone());
                     editor.putString(getString(R.string.saved_email), response.body().getEmail());

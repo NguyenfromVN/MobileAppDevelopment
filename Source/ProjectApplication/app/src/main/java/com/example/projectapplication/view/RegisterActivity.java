@@ -59,6 +59,73 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setReg() {
+        boolean cancel = false;
+
+        // Kiểm tra input
+        if(fullName.getText().toString().length()<=0)
+        {
+            fullName.setError("Vui lòng nhập tên");
+            cancel = true;
+        }
+        else fullName.setError(null);
+
+        if(email.getText().toString().length()<=0)
+        {
+            email.setError("Vui lòng nhập email");
+            cancel = true;
+        }
+        else email.setError(null);
+
+        if(dob.getText().toString().length()<=0)
+        {
+            dob.setError("Vui lòng nhập ngày sinh");
+            cancel = true;
+        }
+        else dob.setError(null);
+
+        if(gender.getText().toString().length()<=0 || (gender.getText().toString()=="2" && gender.getText().toString()!="1"))
+        {
+            gender.setError("Vui lòng nhập đúng giới tính theo yêu cầu");
+            cancel = true;
+        }
+        else gender.setError(null);
+
+        if(gender.getText().toString().length()<=0 || (gender.getText().toString()=="2" && gender.getText().toString()!="1"))
+        {
+            gender.setError("Vui lòng nhập đúng giới tính theo yêu cầu");
+            cancel = true;
+        }
+        else gender.setError(null);
+
+        if(gender.getText().toString().length()<=0 || (gender.getText().toString()=="2" && gender.getText().toString()!="1"))
+        {
+            gender.setError("Vui lòng nhập đúng giới tính theo yêu cầu");
+            cancel = true;
+        }
+        else gender.setError(null);
+
+        if(phone.getText().toString().length()<=0 )
+        {
+            phone.setError("Vui lòng nhập số điện thoại");
+            cancel = true;
+        }
+        else phone.setError(null);
+
+        if(password.getText().toString().length()<=0 )
+        {
+            password.setError("Vui lòng nhập password");
+            cancel = true;
+        }
+        else password.setError(null);
+
+        if(add.getText().toString().length()<=0 )
+        {
+            add.setError("Vui lòng nhập địa chỉ");
+            cancel = true;
+        }
+        else add.setError(null);
+
+        if(cancel==false) {
         final String fullname = fullName.getText().toString();
         final String pass = password.getText().toString();
         final String email1 = email.getText().toString();
@@ -67,6 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
         final String phone1 = phone.getText().toString();
         final String gender1 = gender.getText().toString();
         final int gender2 = Integer.parseInt(gender1);
+
 
         final RegisterRequest request = new RegisterRequest();
         request.setAddress(add1);
@@ -77,42 +145,44 @@ public class RegisterActivity extends AppCompatActivity {
         request.setPassword(pass);
         request.setPhone(phone1);
 
-        Call<RegisterResponse> call= userService.register(request);
-        call.enqueue(new Callback<RegisterResponse>() {
-            @Override
-            public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
-                if(response.code()==200){
 
-                    Log.d(TAG, "onResponse: success");
-                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            Call<RegisterResponse> call = userService.register(request);
+            call.enqueue(new Callback<RegisterResponse>() {
+                @Override
+                public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
+                    if (response.code() == 200) {
 
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    RegisterActivity.this.finish();
+                        Log.d(TAG, "onResponse: success");
+                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
 
-                }
-                else{try {
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        RegisterActivity.this.finish();
 
-                    JSONObject jObjError = new JSONObject(response.errorBody().string());
-                    JSONArray jsonArray = (JSONArray) jObjError.get("message");
-                    String str="";
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject object = (JSONObject) jsonArray.get(i);
-                        str +=object.getString("msg")+"";
+                    } else {
+                        try {
+
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            JSONArray jsonArray = (JSONArray) jObjError.get("message");
+                            String str = "";
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject object = (JSONObject) jsonArray.get(i);
+                                str += object.getString("msg") + "";
+                            }
+                            Toast.makeText(RegisterActivity.this, str, Toast.LENGTH_LONG).show();
+
+                        } catch (Exception e) {
+                            Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
-                    Toast.makeText(RegisterActivity.this,str,Toast.LENGTH_LONG).show();
+                }
 
-                } catch (Exception e) {
-                    Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                }}
-            }
-
-            @Override
-            public void onFailure(Call<RegisterResponse> call, Throwable t) {
-                Log.d(TAG, "onFailure: "+t.getMessage());
-            }
-        });
-
+                @Override
+                public void onFailure(Call<RegisterResponse> call, Throwable t) {
+                    Log.d(TAG, "onFailure: " + t.getMessage());
+                }
+            });
+        }
 
 
 
