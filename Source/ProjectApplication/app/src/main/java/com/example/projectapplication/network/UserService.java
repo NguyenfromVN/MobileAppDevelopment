@@ -1,5 +1,7 @@
 package com.example.projectapplication.network;
 
+import com.example.projectapplication.model.AddStopPointRequest;
+import com.example.projectapplication.model.AddStopPointResponse;
 import com.example.projectapplication.model.CreateTourRequest;
 import com.example.projectapplication.model.CreateTourResponse;
 import com.example.projectapplication.model.FbLoginRequest;
@@ -13,7 +15,7 @@ import com.example.projectapplication.model.OTPRequest;
 import com.example.projectapplication.model.OTPResponse;
 import com.example.projectapplication.model.RegisterRequest;
 import com.example.projectapplication.model.RegisterResponse;
-import com.example.projectapplication.model.UpdateInfroRequest;
+import com.example.projectapplication.model.UpdateInforRequest;
 import com.example.projectapplication.model.UpdatePasswordRequest;
 import com.example.projectapplication.model.UserInforResponse;
 import com.example.projectapplication.model.VerifyOTPRequest;
@@ -50,7 +52,7 @@ public interface UserService {
     Call<UserInforResponse> userInfor(@Header("Authorization") String token);
 
     @POST("user/edit-info")
-    Call<JSONObject> updateInfor(@Header("Authorization") String token, @Body UpdateInfroRequest request);
+    Call<JSONObject> updateInfor(@Header("Authorization") String token, @Body UpdateInforRequest request);
 
     @POST("user/update-password")
     Call<JSONObject> updatePassword(@Header("Authorization") String token, @Body UpdatePasswordRequest request);
@@ -60,4 +62,7 @@ public interface UserService {
 
     @POST("/user/verify-otp-recovery")
     Call<JSONObject> verifyOTP(@Body VerifyOTPRequest request);
+
+    @POST("/tour/set-stop-points")
+    Call<AddStopPointResponse> addStopPoint(@Body AddStopPointRequest request, @Header("Authorization") String token);
 }

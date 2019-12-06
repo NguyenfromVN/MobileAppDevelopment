@@ -2,7 +2,7 @@ package com.example.projectapplication.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class UpdateInfroRequest {
+public class UpdateInforRequest {
     @SerializedName("fullName")
     String fullName;
     @SerializedName("gender")

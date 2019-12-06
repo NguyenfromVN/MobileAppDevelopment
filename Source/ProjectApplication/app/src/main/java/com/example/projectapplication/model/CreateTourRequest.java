@@ -20,13 +20,13 @@ public class CreateTourRequest {
     @SerializedName("isPrivate")
     private boolean isPrivate;
     @SerializedName("sourceLat")
-    private int sourceLat=0;
+    private double sourceLat=0;
     @SerializedName("sourceLong")
-    private int sourceLong=0;
+    private double sourceLong=0;
     @SerializedName("desLat")
-    private int desLat=0;
+    private double desLat=0;
     @SerializedName("desLong")
-    private int desLong=0;
+    private double desLong=0;
 
     public void setName(String name) {
         this.name = name;
@@ -59,4 +59,12 @@ public class CreateTourRequest {
     public void setPrivate(boolean aPrivate) {
         isPrivate = aPrivate;
     }
+
+    public void setSourceLat(double sourceLat) { this.sourceLat = sourceLat; }
+
+    public void setSourceLong(double sourceLong) { this.sourceLong = sourceLong; }
+
+    public void setDesLat(double desLat) { this.desLat = desLat; }
+
+    public void setDesLong(double desLong) { this.desLong = desLong; }
 }

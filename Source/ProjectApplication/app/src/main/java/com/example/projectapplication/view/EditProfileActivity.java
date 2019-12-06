@@ -14,8 +14,7 @@ import android.widget.Toast;
 
 import com.example.projectapplication.R;
 import com.example.projectapplication.manager.MyApplication;
-import com.example.projectapplication.model.UpdateInfroRequest;
-import com.example.projectapplication.model.UserInforResponse;
+import com.example.projectapplication.model.UpdateInforRequest;
 import com.example.projectapplication.network.MyAPIClient;
 import com.example.projectapplication.network.UserService;
 
@@ -29,7 +28,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private UserService userService;
     private EditText fullName, email, phone, gender, dob;
     private Button submit;
-    private UpdateInfroRequest request;
+    private UpdateInforRequest request;
 
 
 
@@ -53,7 +52,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void editProfile() {
-        request = new UpdateInfroRequest();
+        request = new UpdateInforRequest();
         request.setFullName(fullName.getText().toString());
         request.setDob(dob.getText().toString());
         long genderInt =  Integer.parseInt(gender.getText().toString());

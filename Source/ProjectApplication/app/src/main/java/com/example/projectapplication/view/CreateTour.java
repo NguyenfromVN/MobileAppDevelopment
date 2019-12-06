@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -100,57 +101,36 @@ public class CreateTour extends AppCompatActivity {
                 minCost=Integer.parseInt(((EditText)findViewById(R.id.editTextMinCost)).getText().toString());
                 maxCost=Integer.parseInt(((EditText)findViewById(R.id.editTextMaxCost)).getText().toString());
 
-                //call add stop points activity
-                Intent addPoints = new Intent(CreateTour.this, AddStopPoint.class);
-                addPoints.putExtra("name",name);
-                addPoints.putExtra("startDate",startDate);
-                addPoints.putExtra("endDate",endDate);
-                addPoints.putExtra("adults",adults);
-                addPoints.putExtra("childs",childs);
-                addPoints.putExtra("minCost",minCost);
-                addPoints.putExtra("maxCost",maxCost);
-                addPoints.putExtra("isPrivate",isPrivate);
-                startActivity(addPoints);
-                finish();
+                //check if user fulfills the form or not
+                boolean isOK=true;
+                if (name=="")
+                    isOK=false;
+                if (startDate<0)
+                    isOK=false;
+                if (endDate<0)
+                    isOK=false;
+                if (adults==0)
+                    isOK=false;
+                if (minCost==0)
+                    isOK=false;
+                if (maxCost==0)
+                    isOK=false;
 
-//                //create tour request
-//                CreateTourRequest request = new CreateTourRequest();
-//                request.setName(name);
-//                request.setStartDate(startDate);
-//                request.setEndDate(endDate);
-//                request.setPrivate(isPrivate);
-//                request.setAdults(adults);
-//                request.setChilds(childs);
-//                request.setMinCost(minCost);
-//                request.setMaxCost(maxCost);
-//
-//                //load token from shared preferences
-//                MyApplication app = (MyApplication) CreateTour.this.getApplication();
-//                token=app.loadToken();
-//
-//                userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
-//                Call<CreateTourResponse> call = userService.createTour(request,token);
-//
-//                call.enqueue(new Callback<CreateTourResponse>() {
-//                    @Override
-//                    public void onResponse(Call<CreateTourResponse> call, Response<CreateTourResponse> response) {
-//                        if(response.isSuccessful()) {
-//                            //if create successfully
-//                        }
-//                        else{
-//                            try {
-//                                JSONObject jObjError = new JSONObject(response.errorBody().string());
-//                                Toast.makeText(CreateTour.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
-//                            } catch (Exception e) {
-//                                Toast.makeText(CreateTour.this, e.getMessage(), Toast.LENGTH_LONG).show();
-//                            }
-//                        }
-//                    }
-//                    @Override
-//                    public void onFailure(Call<CreateTourResponse> call, Throwable t) {
-//                        Log.d(TAG, t.getMessage());
-//                    }
-//                });
+                //call add stop points activity
+                if (isOK) {
+                    Intent addPoints = new Intent(CreateTour.this, AddStopPoint.class);
+                    addPoints.putExtra("name", name);
+                    addPoints.putExtra("startDate", startDate);
+                    addPoints.putExtra("endDate", endDate);
+                    addPoints.putExtra("adults", adults);
+                    addPoints.putExtra("childs", childs);
+                    addPoints.putExtra("minCost", minCost);
+                    addPoints.putExtra("maxCost", maxCost);
+                    addPoints.putExtra("isPrivate", isPrivate);
+                    startActivity(addPoints);
+                    finish();
+                } else
+                    Toast.makeText(CreateTour.this, "Please fulfill the form to continue", Toast.LENGTH_LONG).show();
             }
         });
     }

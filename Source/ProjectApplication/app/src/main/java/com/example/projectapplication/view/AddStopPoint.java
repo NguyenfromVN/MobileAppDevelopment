@@ -21,7 +21,11 @@ import android.widget.Toast;
 
 import com.example.projectapplication.R;
 import com.example.projectapplication.manager.MyApplication;
+import com.example.projectapplication.model.AddStopPointRequest;
+import com.example.projectapplication.model.AddStopPointResponse;
 import com.example.projectapplication.model.CoordinateSet;
+import com.example.projectapplication.model.CreateTourRequest;
+import com.example.projectapplication.model.CreateTourResponse;
 import com.example.projectapplication.model.LatLong;
 import com.example.projectapplication.model.LoadListStopPointRequest;
 import com.example.projectapplication.model.LoadListStopPointResponse;
@@ -74,6 +78,7 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
     private static boolean flagLeaveDatePicker=false;
     private static TextView textViewArriveDate;
     private static TextView textViewLeaveDate;
+    private String tourId;
     private String[] listProvinces= {
             "",
             "Hồ Chí Minh",
@@ -162,15 +167,161 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //show list of current stop points
         FloatingActionButton fab = findViewById(R.id.fab2);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //show list of current stop points
-                Toast.makeText(AddStopPoint.this, "Empty Function", Toast.LENGTH_LONG).show();
+                createListStopPoints();
             }
         });
 
+    }
+
+    private void createListStopPoints(){
+        // create an alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("List stop points");
+
+        // set the custom layout
+        final View customLayout = getLayoutInflater().inflate(R.layout.custom_alert_dialog_layout_for_list_stop_points, null);
+        builder.setView(customLayout);
+
+        // add SEND button
+        builder.setPositiveButton("SEND", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //if list stop points has less than 2 items then do nothing
+                if (finalListStopPoints.size()<2){
+                    Toast.makeText(AddStopPoint.this, "Not enough stop points for a tour",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                //create tour request
+                CreateTourRequest request = new CreateTourRequest();
+                request.setName(name);
+                request.setStartDate(startDate);
+                request.setEndDate(endDate);
+                request.setPrivate(isPrivate);
+                request.setAdults(adults);
+                request.setChilds(childs);
+                request.setMinCost(minCost);
+                request.setMaxCost(maxCost);
+                request.setSourceLat(finalListStopPoints.get(0).getLat());
+                request.setSourceLong(finalListStopPoints.get(0).getLong());
+                request.setDesLat(finalListStopPoints.get(finalListStopPoints.size()-1).getLat());
+                request.setDesLong(finalListStopPoints.get(finalListStopPoints.size()-1).getLong());
+
+                //load token from shared preferences
+                MyApplication app = (MyApplication) AddStopPoint.this.getApplication();
+                token=app.loadToken();
+
+                userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+                Call<CreateTourResponse> call = userService.createTour(request,token);
+
+                call.enqueue(new Callback<CreateTourResponse>() {
+                    @Override
+                    public void onResponse(Call<CreateTourResponse> call, Response<CreateTourResponse> response) {
+                        if(response.isSuccessful()) {
+                            tourId=response.body().getId();
+                            createAddStopPointRequest();
+                        }
+                        else{
+                            try {
+                                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                                Toast.makeText(AddStopPoint.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                            } catch (Exception e) {
+                                Toast.makeText(AddStopPoint.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<CreateTourResponse> call, Throwable t) {
+                        Log.d(TAG, t.getMessage());
+                    }
+                });
+            }
+        });
+
+        //add CLOSE button
+        builder.setNeutralButton("CLOSE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //do nothing
+            }
+        });
+
+        //add CLEAR
+        builder.setNegativeButton("CLEAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finalListStopPoints.clear();
+            }
+        });
+
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        //set information for dialog
+        String tmp;
+
+        if (finalListStopPoints.size()>0)
+            tmp=finalListStopPoints.get(0).getName();
+        else
+            tmp="";
+        ((TextView)dialog.findViewById(R.id.textViewStartPoint)).setText(tmp);
+
+        if (finalListStopPoints.size()>1)
+            tmp=finalListStopPoints.get(finalListStopPoints.size()-1).getName();
+        else
+            tmp="";
+        ((TextView)dialog.findViewById(R.id.textViewEndPoint)).setText(tmp);
+
+        tmp="";
+        for (int i=1; i<finalListStopPoints.size()-1; i++)
+            if (i==1)
+                tmp+=i+". "+finalListStopPoints.get(i).getName();
+            else
+                tmp+="\n"+i+". "+finalListStopPoints.get(i).getName();
+        ((TextView)dialog.findViewById(R.id.textViewListStopPoints)).setText(tmp);
+    }
+
+    private void createAddStopPointRequest(){
+        //create add stop points request
+        AddStopPointRequest Request=new AddStopPointRequest();
+        Request.setTourId(tourId);
+        finalListStopPoints.remove(0);
+        finalListStopPoints.remove(finalListStopPoints.size()-1);
+        Request.setStopPoints(finalListStopPoints);
+
+        Call<AddStopPointResponse> Call = userService.addStopPoint(Request,token);
+
+        Call.enqueue(new Callback<AddStopPointResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<AddStopPointResponse> call, Response<AddStopPointResponse> response) {
+                if(response.isSuccessful()) {
+                    Toast.makeText(AddStopPoint.this, "Add stop point successfully",
+                            Toast.LENGTH_LONG).show();
+                    finish();
+                }
+                else{
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Toast.makeText(AddStopPoint.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(AddStopPoint.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<AddStopPointResponse> call, Throwable t) {
+                Log.d(TAG, t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -219,11 +370,19 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
 
     //create an alert dialog as a form for user to fill up
     private void createAddStopPointForm(final int id) {
+        //reset day, month, year variables
+        arriveDay=1;
+        arriveMonth=1;
+        arriveYear=1900;
+        leaveDate=1;
+        leaveMonth=1;
+        leaveYear=1900;
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Stop point information");
 
         // set the custom layout
-        final View customLayout = getLayoutInflater().inflate(R.layout.custom_alert_dialog_layout, null);
+        final View customLayout = getLayoutInflater().inflate(R.layout.custom_alert_dialog_layout_for_stop_point, null);
 
         builder.setView(customLayout);
 
@@ -251,18 +410,32 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
                     System.out.println(e);
                 }
 
-                StopPointForTour tmp=new StopPointForTour();
-                tmp.setName(currentListStopPoints.get(id).getName());
-                tmp.setServiceTypeId((currentListStopPoints.get(id).getServiceTypeId()));
-                tmp.setAddress(currentListStopPoints.get(id).getAddress());
-                tmp.setProvinceId(currentListStopPoints.get(id).getProvinceId());
-                tmp.setMinCost(currentListStopPoints.get(id).getMinCost());
-                tmp.setMaxCost(currentListStopPoints.get(id).getMaxCost());
-                tmp.setArrivalAt(arriveDate);
-                tmp.setLeaveAt(leaveDate);
-                tmp.setLat(currentListStopPoints.get(id).getLat());
-                tmp.setLong(currentListStopPoints.get(id).getLong());
-                finalListStopPoints.add(tmp);
+                //check if user fulfills the form or not
+                boolean isOK=true;
+                String stopPointName=((EditText)customLayout.findViewById(R.id.editTextStopPointName)).getText().toString();
+                if (stopPointName.isEmpty())
+                    isOK=false;
+                if (arriveDate<0)
+                    isOK=false;
+                if (leaveDate<0)
+                    isOK=false;
+
+                if (isOK){
+                    StopPointForTour tmp=new StopPointForTour();
+                    tmp.setName(stopPointName);
+                    tmp.setServiceTypeId((currentListStopPoints.get(id).getServiceTypeId()));
+                    tmp.setAddress(currentListStopPoints.get(id).getAddress());
+                    tmp.setProvinceId(currentListStopPoints.get(id).getProvinceId());
+                    tmp.setMinCost(minCost);
+                    tmp.setMaxCost(maxCost);
+                    tmp.setArrivalAt(arriveDate);
+                    tmp.setLeaveAt(leaveDate);
+                    tmp.setLat(currentListStopPoints.get(id).getLat());
+                    tmp.setLong(currentListStopPoints.get(id).getLong());
+                    finalListStopPoints.add(tmp);
+                } else
+                    Toast.makeText(AddStopPoint.this, "Can not add stop point\nPlease fulfill the form to do this",
+                            Toast.LENGTH_LONG).show();
 
                 //move camera focus to selected marker
                 LatLng position=new LatLng(currentListStopPoints.get(id).getLat(),
@@ -275,9 +448,6 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
         builder.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(AddStopPoint.this, "New stop point was cancelled",
-                        Toast.LENGTH_LONG).show();
-
                 //move camera focus to selected marker
                 LatLng position=new LatLng(currentListStopPoints.get(id).getLat(),
                         currentListStopPoints.get(id).getLong());
