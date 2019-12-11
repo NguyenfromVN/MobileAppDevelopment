@@ -14,6 +14,12 @@ public class LatLong {
         Long=x.longitude;
     }
 
+    public LatLong(double lat, double lng)
+    {
+        this.Lat=lat;
+        this.Long=lng;
+    }
+
     public void setLat(double lat) {
         Lat = lat;
     }

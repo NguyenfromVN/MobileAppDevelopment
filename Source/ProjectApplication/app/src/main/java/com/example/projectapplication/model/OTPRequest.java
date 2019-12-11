@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class OTPRequest {
     @SerializedName("type")
-    String type;
+    private  String type;
     @SerializedName("value")
-    String value;
+    private String value;
 
     public void setType(String type) {
         this.type = type;

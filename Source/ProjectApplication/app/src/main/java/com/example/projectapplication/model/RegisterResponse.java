@@ -4,34 +4,34 @@ import com.google.gson.annotations.SerializedName;
 
 public class RegisterResponse {
     @SerializedName("fullName")
-    String fullName;
+    private  String fullName;
 
     @SerializedName("createdOn")
-    long createdOn;
+    private  long createdOn;
 
     @SerializedName("dob")
-    String dob;
+    private  String dob;
 
     @SerializedName("gender")
-    int gender;
+    private  int gender;
 
     @SerializedName("password")
-    String password;
+    private  String password;
 
     @SerializedName("email")
-    String email;
+    private String email;
 
     @SerializedName("phone")
-    String phone;
+    private  String phone;
 
     @SerializedName("address")
-    String address;
+    private  String address;
 
     @SerializedName("imgUrl")
-    String imgUrl;
+    private  String imgUrl;
 
     @SerializedName("id")
-    String id;
+    private  String id;
 
     public String getFullName() {
         return fullName;

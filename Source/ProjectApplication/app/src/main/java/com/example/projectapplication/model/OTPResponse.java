@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class OTPResponse {
     @SerializedName("userId")
-    int userId;
+    private  int userId;
     @SerializedName("type")
-    String type;
+    private  String type;
     @SerializedName("expiredOn")
-    long expiredOn;
+    private long expiredOn;
 
     public int getUserId() {
         return userId;

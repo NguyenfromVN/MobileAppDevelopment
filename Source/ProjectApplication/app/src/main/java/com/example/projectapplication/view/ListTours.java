@@ -69,6 +69,12 @@ public class ListTours extends AppCompatActivity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         break;
+                    case R.id.explore:
+                        Intent intent1 = new Intent(ListTours.this, ExploreActivity.class);
+                        intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent1);
+                        break;
+
                 }
                 return false;
             }

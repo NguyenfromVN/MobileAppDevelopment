@@ -22,25 +22,25 @@
         android:id="@+id/fab"
         app:layout_anchor="@id/navi"
         app:layout_anchorGravity="end"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
         android:layout_margin="@dimen/fab_margin"
         app:maxImageSize="50dp"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/navi"
-        app:menu="@menu/nav_menu"
-        android:backgroundTint="@color/colorAccent"
-        android:background="@color/colorAccent"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
-        android:layout_gravity="bottom"
+        app:srcCompat="@android:drawable/ic_input_add"
         />
+
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/navi"-->
+<!--        app:menu="@menu/nav_menu"-->
+<!--        android:backgroundTint="@color/colorAccent"-->
+<!--        android:background="@color/colorAccent"-->
+<!--        app:itemIconTint="@color/white"-->
+<!--        app:itemTextColor="@color/white"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        />-->
 
 
 

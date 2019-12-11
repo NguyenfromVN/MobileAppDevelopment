@@ -1,5 +1,7 @@
 package com.example.projectapplication.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 public class StopPoint {
@@ -74,5 +76,59 @@ public class StopPoint {
 
     public int getLandingTimesOfUser() {
         return landingTimesOfUser;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setProvinceId(int provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public void setLat(double lat) {
+        Lat = lat;
+    }
+
+    public void setLong(double aLong) {
+        Long = aLong;
+    }
+
+    public void setMinCost(int minCost) {
+        this.minCost = minCost;
+    }
+
+    public void setMaxCost(int maxCost) {
+        this.maxCost = maxCost;
+    }
+
+    public void setServiceTypeId(int serviceTypeId) {
+        this.serviceTypeId = serviceTypeId;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public void setLandingTimesOfUser(int landingTimesOfUser) {
+        this.landingTimesOfUser = landingTimesOfUser;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return this.name;
     }
 }

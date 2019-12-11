@@ -4,17 +4,17 @@ import com.google.gson.annotations.SerializedName;
 
 public class UpdateInforRequest {
     @SerializedName("fullName")
-    String fullName;
+    private String fullName;
     @SerializedName("gender")
-    long gender;
+    private int gender;
     @SerializedName("dob")
-    String dob;
+    private  String dob;
 
     public String getFullName() {
         return fullName;
     }
 
-    public long getGender() {
+    public int getGender() {
         return gender;
     }
 
@@ -26,7 +26,7 @@ public class UpdateInforRequest {
         this.fullName = fullName;
     }
 
-    public void setGender(long gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 

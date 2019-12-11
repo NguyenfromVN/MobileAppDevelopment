@@ -55,7 +55,7 @@ public class EditProfileActivity extends AppCompatActivity {
         request = new UpdateInforRequest();
         request.setFullName(fullName.getText().toString());
         request.setDob(dob.getText().toString());
-        long genderInt =  Integer.parseInt(gender.getText().toString());
+        int genderInt =  Integer.parseInt(gender.getText().toString());
         request.setGender(genderInt);
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
 
@@ -73,7 +73,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     editor.putString(getString(R.string.saved_name),request.getFullName());
 
                     editor.putString(getString(R.string.saved_dob), request.getDob());
-                    editor.putLong(getString(R.string.saved_gender), request.getGender());
+                    editor.putInt(getString(R.string.saved_gender), request.getGender());
 
                     editor.commit();
 

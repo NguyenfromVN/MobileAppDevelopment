@@ -12,4 +12,5 @@
     <string name="saved_dob">dob</string>
     <string name="saved_gender">gender</string>
     <string name="saved_id">id</string>
+    <string name="saved_avt">url_avt</string>
 </resources>

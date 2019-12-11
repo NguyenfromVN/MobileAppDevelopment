@@ -6,19 +6,30 @@ import java.util.Date;
 
 public class UserInforResponse {
     @SerializedName("id")
-    int id;
+    private  int id;
     @SerializedName("fullName")
-    String full_name;
+    private String full_name;
     @SerializedName("email")
-    String email;
+    private String email;
     @SerializedName("phone")
-    String phone;
+    private String phone;
     @SerializedName("address")
-    String address;
+    private String address;
     @SerializedName("dob")
-    String dob;
+    private String dob;
     @SerializedName("gender")
-    int gender;
+    private int gender;
+
+    @SerializedName("avatar")
+    String avatar;
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public int getId() {
         return id;
@@ -68,7 +79,7 @@ public class UserInforResponse {
         this.dob = dob;
     }
 
-    public long getGender() {
+    public int getGender() {
         return gender;
     }
 

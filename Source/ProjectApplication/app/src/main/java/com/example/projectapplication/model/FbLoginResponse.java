@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class FbLoginResponse {
     @SerializedName("avatar")
-    String avatar;
+    private String avatar;
     @SerializedName("fullName")
-    String fullName;
+    private  String fullName;
     @SerializedName("token")
-    String token;
+    private String token;
 
     public String getAvatar() {
         return avatar;

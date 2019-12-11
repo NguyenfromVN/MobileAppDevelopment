@@ -18,4 +18,5 @@
     <string name="fb_login_protocol_scheme">fb2543069522591199</string>
     <string name="forgot_pass">Forgot Password?</string>
     <string name="btn_forgotPass">Send OTP</string>
+
 </resources>

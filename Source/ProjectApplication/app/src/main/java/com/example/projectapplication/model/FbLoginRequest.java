@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class FbLoginRequest {
     @SerializedName("accessToken")
-    String accessToken;
+    private String accessToken;
 
     public String getAccessToken() {
         return accessToken;

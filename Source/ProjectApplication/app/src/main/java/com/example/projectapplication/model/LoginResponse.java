@@ -7,11 +7,11 @@ public class LoginResponse {
     @SerializedName("userId")
     String userId;
     @SerializedName("emailVerified")
-    Boolean emailVerified;
+    private Boolean emailVerified;
     @SerializedName("phoneVerified")
-    Boolean phoneVerified;
+    private  Boolean phoneVerified;
     @SerializedName("token")
-    String token;
+    private String token;
 
 
     public String getUserId() {

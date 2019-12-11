@@ -4,19 +4,19 @@ import com.google.gson.annotations.SerializedName;
 
 public class RegisterRequest {
     @SerializedName("password")
-    String password;
+    private  String password;
     @SerializedName("fullName")
-    String fullName;
+    private  String fullName;
     @SerializedName("email")
-    String email;
+    private  String email;
     @SerializedName("phone")
-    String phone;
+    private  String phone;
     @SerializedName("address")
-    String address;
+    private  String address;
     @SerializedName("dob")
-    String dob;
+    private  String dob;
     @SerializedName("gender")
-    int gender;
+    private  int gender;
 
     public String getPassword() {
         return password;

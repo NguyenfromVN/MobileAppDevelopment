@@ -46,6 +46,19 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:paddingLeft="5dp"
-        android:paddingRight="5dp"/>
+        android:paddingRight="5dp" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/navi"
+        app:menu="@menu/nav_menu"
+        android:backgroundTint="@color/colorAccent"
+        android:background="@color/colorAccent"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        android:layout_gravity="bottom"
+        />
+
 
 </LinearLayout>

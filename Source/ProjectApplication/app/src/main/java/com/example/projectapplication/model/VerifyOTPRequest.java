@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class VerifyOTPRequest {
     @SerializedName("userId")
-    int userId;
+    private int userId;
     @SerializedName("newPassword")
-    String newPass;
+    private  String newPass;
     @SerializedName("verifyCode")
-    String verifyCode;
+    private  String verifyCode;
 
     public void setUserId(int userId) {
         this.userId = userId;

@@ -220,8 +220,9 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString(getString(R.string.saved_phone), response.body().getPhone());
                     editor.putString(getString(R.string.saved_email), response.body().getEmail());
                     editor.putString(getString(R.string.saved_dob), response.body().getDob());
-                    editor.putLong(getString(R.string.saved_gender), response.body().getGender());
+                    editor.putInt(getString(R.string.saved_gender), response.body().getGender());
                     editor.putString(getString(R.string.saved_address), response.body().getAddress());
+                    editor.putString(getString(R.string.saved_avt), response.body().getAvatar());
                     editor.commit();
                 }
                 else{

@@ -42,7 +42,7 @@
             android:background="@drawable/et_bg"
             android:ems="10"
             android:hint="New Password"
-            android:inputType="datetime"
+            android:inputType="textPassword"
             android:paddingLeft="@dimen/fab_margin"
             android:textColor="#000000"
             android:textColorHint="@color/white"
@@ -53,7 +53,7 @@
             android:id="@+id/btnPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hoàn tất"
+            android:text="Submit"
             android:background="@drawable/btn_bg"
             android:textColor="@color/white"/>
     </LinearLayout>
