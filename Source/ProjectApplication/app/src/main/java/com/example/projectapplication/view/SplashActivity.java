@@ -51,6 +51,7 @@ public class SplashActivity extends AppCompatActivity {
         long expire = (new Date()).getTime()/1000 - time;
         MyAPIClient.getInstance().setAccessToken(accessToken);
         timer = new Timer();
+        Log.d("TOKEN", "onCreate: "+accessToken);
 
 
         if (TextUtils.isEmpty(accessToken) || expire > Constants.expire_token) {

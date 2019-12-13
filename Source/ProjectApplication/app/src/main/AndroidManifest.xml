@@ -22,8 +22,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.ExploreActivity"
-            android:label="Explore"></activity>
+        <activity android:name=".view.SearchExploreActivity"></activity>
+        <activity
+            android:name=".view.DetailStopPointActivity"
+            android:label="@string/title_activity_detail_stop_point"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.ExploreActivity"
+            android:label="Explore" />
         <activity
             android:name=".view.ForgotPassActivity"
             android:label="Forgot Password" />

@@ -2,6 +2,8 @@ package com.example.projectapplication.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.location.LocationListener;
@@ -13,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -44,6 +48,8 @@ public class ExploreActivity extends AppCompatActivity {
     private LocationManager locationManager;
     private LocationListener listener;
     private UserService userService;
+    private Button btnSearch;
+    private EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +83,20 @@ public class ExploreActivity extends AppCompatActivity {
             }
         });
 
+        editText = (EditText)findViewById(R.id.search);
+
+        btnSearch=(Button)findViewById(R.id.btnSearch);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ExploreActivity.this, SearchExploreActivity.class);
+                intent.putExtra("Search",editText.getText());  // Truyền một String
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
+            }
+        });
+
         //List stop point
         listStopPoint();
     }
@@ -89,13 +109,37 @@ public class ExploreActivity extends AppCompatActivity {
 
         loadStopPoint();
 
-//        lw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                //Intent intent = new Intent(ExploreActivity.this, SettingActivity.class);
-//
-//            }
-//        });
+        lw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(ExploreActivity.this, DetailStopPointActivity.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putString("Name", itemList.get(position).getName());
+                bundle.putString("Address",itemList.get(position).getAddress());
+                bundle.putString("Contact", itemList.get(position).getContact());
+                bundle.putInt("minCost", itemList.get(position).getMinCost());
+                bundle.putInt("maxCost", itemList.get(position).getMinCost());
+                switch (itemList.get(position).getServiceTypeId()){
+                    case 1:
+                        bundle.putString("Service", "Restaurant");
+                    break;
+                    case 2:
+                        bundle.putString("Service", "Hotel");
+                        break;
+                    case 3:
+                        bundle.putString("Service", "Rest Station");
+                        break;
+                    case 4:
+                        bundle.putString("Service", "Other");
+                        break;
+                }
+
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+            }
+        });
     }
 
     private void loadStopPoint() {
