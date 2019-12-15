@@ -6,6 +6,7 @@ import com.example.projectapplication.model.CreateTourRequest;
 import com.example.projectapplication.model.CreateTourResponse;
 import com.example.projectapplication.model.FbLoginRequest;
 import com.example.projectapplication.model.FbLoginResponse;
+import com.example.projectapplication.model.ListStopSearch;
 import com.example.projectapplication.model.ListToursResponse;
 import com.example.projectapplication.model.LoadListStopPointRequest;
 import com.example.projectapplication.model.LoadListStopPointResponse;
@@ -15,6 +16,7 @@ import com.example.projectapplication.model.OTPRequest;
 import com.example.projectapplication.model.OTPResponse;
 import com.example.projectapplication.model.RegisterRequest;
 import com.example.projectapplication.model.RegisterResponse;
+import com.example.projectapplication.model.StopPoint;
 import com.example.projectapplication.model.UpdateInforRequest;
 import com.example.projectapplication.model.UpdatePasswordRequest;
 import com.example.projectapplication.model.UserInforResponse;
@@ -65,4 +67,7 @@ public interface UserService {
 
     @POST("/tour/set-stop-points")
     Call<AddStopPointResponse> addStopPoint(@Body AddStopPointRequest request, @Header("Authorization") String token);
+
+    @GET("/tour/search/service")
+    Call<ListStopSearch> loadSearchStopPoint(@Query("searchKey") String searchKey, @Query("provinceId") int provinceId, @Query("provinceName") String provinceName, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize, @Header("Authorization") String Authorization);
 }

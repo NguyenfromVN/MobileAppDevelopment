@@ -18,6 +18,7 @@ import com.example.projectapplication.manager.MyApplication;
 import com.example.projectapplication.model.UserInforResponse;
 import com.example.projectapplication.network.MyAPIClient;
 import com.example.projectapplication.network.UserService;
+import com.facebook.login.LoginManager;
 
 import org.json.JSONObject;
 
@@ -58,6 +59,7 @@ public class SplashActivity extends AppCompatActivity {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
+                    LoginManager.getInstance().logOut();
                     Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
@@ -71,6 +73,7 @@ public class SplashActivity extends AppCompatActivity {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
+
                     Intent intent = new Intent(SplashActivity.this, ListTours.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);

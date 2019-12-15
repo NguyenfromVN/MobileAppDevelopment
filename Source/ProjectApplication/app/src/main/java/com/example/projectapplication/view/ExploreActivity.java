@@ -45,11 +45,8 @@ public class ExploreActivity extends AppCompatActivity {
     private ListView lw;
     private List<StopPoint> itemList=new ArrayList<>();
     private ArrayAdapter<StopPoint> adapter;
-    private LocationManager locationManager;
-    private LocationListener listener;
     private UserService userService;
     private Button btnSearch;
-    private EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,14 +80,12 @@ public class ExploreActivity extends AppCompatActivity {
             }
         });
 
-        editText = (EditText)findViewById(R.id.search);
 
         btnSearch=(Button)findViewById(R.id.btnSearch);
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ExploreActivity.this, SearchExploreActivity.class);
-                intent.putExtra("Search",editText.getText());  // Truyền một String
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
 

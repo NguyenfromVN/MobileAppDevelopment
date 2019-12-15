@@ -9,6 +9,7 @@
 
 
     <RelativeLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -18,43 +19,18 @@
             android:layout_margin="0dp"
             android:background="@drawable/grad_bg"
             android:orientation="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context=".view.ListTours"
             tools:showIn="@layout/list_tours">
 
 
-            <LinearLayout
+            <Button
+                android:layout_margin="@dimen/fab_margin"
+                android:id="@+id/btnSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/search"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/fab_margin"
-                    android:layout_weight="1"
-                    android:background="@drawable/et_bg"
-                    android:ems="10"
-                    android:hint="Search"
-                    android:inputType="textEmailAddress"
-                    android:padding="@dimen/fab_margin"
-                    android:paddingLeft="@dimen/fab_margin"
-                    android:textColor="#000000"
-                    android:textColorHint="@color/white"
-                    android:textSize="20sp" />
-
-                <Button
-                    android:id="@+id/btnSearch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_weight="5"
-                    android:background="@drawable/btn_bg"
-                    android:text="OK"
-                    android:textColor="@color/white" />
-
-            </LinearLayout>
+                android:background="@drawable/btn_bg"
+                android:text="Search"
+                android:textColor="@color/white" />
 
 
             <FrameLayout

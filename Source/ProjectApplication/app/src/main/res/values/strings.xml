@@ -1,4 +1,5 @@
 <resources>
+    <string name="spinner12">Choose a province</string>
     <string name="app_name">Travel Assistant</string>
     <string name="user_name">Email or Phone number</string>
     <string name="password">Password</string>
