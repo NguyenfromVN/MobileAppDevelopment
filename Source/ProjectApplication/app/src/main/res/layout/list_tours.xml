@@ -21,11 +21,11 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         app:layout_anchor="@id/navi"
+        app:useCompatPadding="true"
         app:layout_anchorGravity="end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
-        android:layout_margin="@dimen/fab_margin"
         app:maxImageSize="50dp"
         app:srcCompat="@android:drawable/ic_input_add"
         />

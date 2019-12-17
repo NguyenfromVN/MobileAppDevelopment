@@ -62,8 +62,11 @@ public class ListTours extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId())
                 {
-                    case R.id.list:
-                         break;
+                    case R.id.history:
+                        Intent intent2 = new Intent(ListTours.this, HistoryActivity.class);
+                        intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent2);
+                        break;
                     case R.id.setting:
                         Intent intent = new Intent(ListTours.this, SettingActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

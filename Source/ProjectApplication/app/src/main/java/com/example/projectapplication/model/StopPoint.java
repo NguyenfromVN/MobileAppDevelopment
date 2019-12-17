@@ -34,9 +34,7 @@ public class StopPoint {
         return name;
     }
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
 
     public String getAddress() {
         return address;

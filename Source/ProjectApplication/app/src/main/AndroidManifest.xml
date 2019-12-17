@@ -31,6 +31,13 @@
             android:name=".view.ExploreActivity"
             android:label="Explore" />
         <activity
+            android:name=".view.HistoryActivity"
+            android:label="History" />
+        <activity
+            android:windowSoftInputMode="stateHidden"
+            android:name=".view.TourDetail"
+            android:label="Tour Detail" />
+        <activity
             android:name=".view.ForgotPassActivity"
             android:label="Forgot Password" />
         <activity

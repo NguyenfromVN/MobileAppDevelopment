@@ -293,8 +293,6 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
         //create add stop points request
         AddStopPointRequest Request=new AddStopPointRequest();
         Request.setTourId(tourId);
-        finalListStopPoints.remove(0);
-        finalListStopPoints.remove(finalListStopPoints.size()-1);
         Request.setStopPoints(finalListStopPoints);
 
         Call<AddStopPointResponse> Call = userService.addStopPoint(Request,token);

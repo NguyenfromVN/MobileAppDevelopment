@@ -19,6 +19,8 @@ import com.example.projectapplication.model.RegisterResponse;
 import com.example.projectapplication.model.ReviewResponse;
 import com.example.projectapplication.model.ReviewsRequest;
 import com.example.projectapplication.model.StopPoint;
+import com.example.projectapplication.model.GetHistoryByStatusResponse;
+import com.example.projectapplication.model.TourInforResponse;
 import com.example.projectapplication.model.UpdateInforRequest;
 import com.example.projectapplication.model.UpdatePasswordRequest;
 import com.example.projectapplication.model.UserInforResponse;
@@ -78,4 +80,13 @@ public interface UserService {
 
     @POST("/tour/add/feedback-service")
     Call<JSONObject> addReview(@Body ReviewsRequest request, @Header("Authorization") String token);
+
+    @GET("/tour/history-user")
+    Call<ListToursResponse> loadListToursOfUser(@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize, @Header("Authorization") String token);
+
+    @GET("/tour/history-user-by-status")
+    Call<GetHistoryByStatusResponse> getHistoryUserByStatus(@Header("Authorization") String token);
+
+    @GET("/tour/info")
+    Call<TourInforResponse> getTourDetail(@Query("tourId") int tourId, @Header("Authorization") String token);
 }

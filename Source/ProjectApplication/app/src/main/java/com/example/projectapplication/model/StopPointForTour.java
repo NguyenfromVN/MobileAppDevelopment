@@ -1,9 +1,15 @@
 package com.example.projectapplication.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 public class StopPointForTour {
 
+    @SerializedName("id")
+    private int id;
+    @SerializedName("serviceId")
+    private int serviceId;
     @SerializedName("address")
     private String address;
     @SerializedName("name")
@@ -24,6 +30,8 @@ public class StopPointForTour {
     private int minCost;
     @SerializedName("maxCost")
     private int maxCost;
+    @SerializedName("index")
+    private int index;
 
     public void setName(String name) { this.name = name; }
 
@@ -58,6 +66,12 @@ public class StopPointForTour {
     public void setMinCost(int minCost) { this.minCost = minCost; }
 
     public void setMaxCost(int maxCost) { this.maxCost = maxCost; }
+
+    public void setId(int id) { this.id = id; }
+
+    public void setServiceId(int serviceId) { this.serviceId = serviceId; }
+
+    public void setIndex(int index) { this.index = index; }
 
     public String getAddress() {
         return address;
@@ -98,4 +112,14 @@ public class StopPointForTour {
     public int getMaxCost() {
         return maxCost;
     }
+
+    public int getId() { return id; }
+
+    public int getServiceId() { return serviceId; }
+
+    public int getIndex() { return index; }
+
+    @NonNull
+    @Override
+    public String toString() { return name; }
 }
