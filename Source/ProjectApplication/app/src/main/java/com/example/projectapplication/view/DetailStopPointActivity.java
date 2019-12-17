@@ -40,8 +40,10 @@ public class DetailStopPointActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         detail.setArguments(bundle);
+        ReviewFragment reviewFragment= new ReviewFragment();
+        reviewFragment.setArguments(bundle);
         adapter.addFragment(detail, "Detail");
-        adapter.addFragment(new ReviewFragment(), "Reviews");
+        adapter.addFragment(reviewFragment, "Reviews");
         viewPager.setAdapter(adapter);
     }
 

@@ -16,6 +16,8 @@ import com.example.projectapplication.model.OTPRequest;
 import com.example.projectapplication.model.OTPResponse;
 import com.example.projectapplication.model.RegisterRequest;
 import com.example.projectapplication.model.RegisterResponse;
+import com.example.projectapplication.model.ReviewResponse;
+import com.example.projectapplication.model.ReviewsRequest;
 import com.example.projectapplication.model.StopPoint;
 import com.example.projectapplication.model.UpdateInforRequest;
 import com.example.projectapplication.model.UpdatePasswordRequest;
@@ -70,4 +72,10 @@ public interface UserService {
 
     @GET("/tour/search/service")
     Call<ListStopSearch> loadSearchStopPoint(@Query("searchKey") String searchKey, @Query("provinceId") int provinceId, @Query("provinceName") String provinceName, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize, @Header("Authorization") String Authorization);
+
+    @GET("/tour/get/feedback-service")
+    Call<ReviewResponse> loadReview(@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize, @Query("serviceId") int id, @Header("Authorization") String token);
+
+    @POST("/tour/add/feedback-service")
+    Call<JSONObject> addReview(@Body ReviewsRequest request, @Header("Authorization") String token);
 }

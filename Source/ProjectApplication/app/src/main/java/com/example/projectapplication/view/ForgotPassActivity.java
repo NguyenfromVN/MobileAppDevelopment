@@ -77,6 +77,7 @@ public class ForgotPassActivity extends AppCompatActivity {
             public void onResponse(Call<OTPResponse> call, Response<OTPResponse> response) {
                 if(response.isSuccessful()){
                     displayAlertDialog(response.body().getUserId());
+                    Toast.makeText(ForgotPassActivity.this, "Success", Toast.LENGTH_LONG).show();
 
 
                 }

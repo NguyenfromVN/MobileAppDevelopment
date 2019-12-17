@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class StopPoint {
     @SerializedName("id")
-    private String id;
+    private int id;
     @SerializedName("name")
     private String name;
     @SerializedName("address")
@@ -34,7 +34,7 @@ public class StopPoint {
         return name;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -78,7 +78,7 @@ public class StopPoint {
         return landingTimesOfUser;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

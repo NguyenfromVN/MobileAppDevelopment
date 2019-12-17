@@ -2,10 +2,12 @@ package com.example.projectapplication.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -136,6 +138,7 @@ public class SearchExploreActivity extends AppCompatActivity implements AdapterV
             @Override
             public void onClick(View v) {
                 Log.d("ID123", "onClick: "+idPronvice+" "+name);
+                closeKeyBoard();
                 if (idPronvice == -1)
                     Toast.makeText(SearchExploreActivity.this, "Please select a province", Toast.LENGTH_LONG).show();
                 else {
@@ -178,7 +181,8 @@ public class SearchExploreActivity extends AppCompatActivity implements AdapterV
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SearchExploreActivity.this, DetailStopPointActivity.class);
                 Bundle bundle = new Bundle();
-
+                bundle.putString("token", token);
+                bundle.putInt("Id", itemList.get(position).getId());
                 bundle.putString("Name", itemList.get(position).getName());
                 bundle.putString("Address",itemList.get(position).getAddress());
                 bundle.putInt("minCost", itemList.get(position).getMinCost());
@@ -203,6 +207,18 @@ public class SearchExploreActivity extends AppCompatActivity implements AdapterV
 
             }
         });
+    }
+
+    // close key board
+    private void closeKeyBoard() {
+        View view = this.getCurrentFocus();
+        if(view!=null)
+        {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+        }
+
     }
 
     private void init() {
@@ -250,7 +266,7 @@ public class SearchExploreActivity extends AppCompatActivity implements AdapterV
                         itemList.add(listStopPoints.get(i));
 
                     }
-                    total_pages=(int)response.body().getTotal()/per_page+1;
+                    total_pages=(int)Math.round(response.body().getTotal()+0.5);
                     adapter = new ArrayAdapter<>(SearchExploreActivity.this, android.R.layout.simple_list_item_1, itemList);
                     lw.setAdapter(adapter);
                 }
@@ -265,6 +281,7 @@ public class SearchExploreActivity extends AppCompatActivity implements AdapterV
 
             @Override
             public void onFailure(Call<ListStopSearch> call, Throwable t) {
+                Log.d("Search", t.getMessage());
 
             }
         });

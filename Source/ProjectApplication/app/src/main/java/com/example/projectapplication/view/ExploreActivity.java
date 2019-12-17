@@ -47,11 +47,14 @@ public class ExploreActivity extends AppCompatActivity {
     private ArrayAdapter<StopPoint> adapter;
     private UserService userService;
     private Button btnSearch;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore);
+
+
 
         // Bottom navi
         BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navi);
@@ -110,11 +113,16 @@ public class ExploreActivity extends AppCompatActivity {
                 Intent intent = new Intent(ExploreActivity.this, DetailStopPointActivity.class);
                 Bundle bundle = new Bundle();
 
+                bundle.putInt("Id", itemList.get(position).getId());
                 bundle.putString("Name", itemList.get(position).getName());
                 bundle.putString("Address",itemList.get(position).getAddress());
                 bundle.putString("Contact", itemList.get(position).getContact());
                 bundle.putInt("minCost", itemList.get(position).getMinCost());
                 bundle.putInt("maxCost", itemList.get(position).getMinCost());
+                MyApplication app = (MyApplication)ExploreActivity.this.getApplication();
+                token=app.loadToken();
+                Log.d("Explore", "onItemClick: "+token);
+                bundle.putString("token", token);
                 switch (itemList.get(position).getServiceTypeId()){
                     case 1:
                         bundle.putString("Service", "Restaurant");
@@ -142,7 +150,7 @@ public class ExploreActivity extends AppCompatActivity {
          CoordinateSet coordinateSet =  new CoordinateSet();
         //load token from shared preferences
         MyApplication app = (MyApplication) ExploreActivity.this.getApplication();
-        String token=app.loadToken();
+        token=app.loadToken();
 
         //
         List<CoordinateSet> coordList=new ArrayList<>();

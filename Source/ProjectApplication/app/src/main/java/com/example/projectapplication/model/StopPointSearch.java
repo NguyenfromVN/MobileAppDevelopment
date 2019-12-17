@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 public class StopPointSearch {
 
     @SerializedName("id")
-    private String id;
+    private int id;
     @SerializedName("name")
     private String name;
     @SerializedName("address")
@@ -27,11 +27,11 @@ public class StopPointSearch {
     @SerializedName("avatar")
     private String avatar;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
