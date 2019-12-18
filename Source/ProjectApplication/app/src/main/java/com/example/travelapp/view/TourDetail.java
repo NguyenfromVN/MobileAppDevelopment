@@ -254,8 +254,6 @@ public class TourDetail extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 //delete stop point here
                 deleteStopPoint(index);
-                //after deleting this stop point, the form will close and list view of stop points will be reloaded
-                loadListStopPoints(id);
             }
         });
 
@@ -342,6 +340,8 @@ public class TourDetail extends AppCompatActivity {
                public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
                    if (response.isSuccessful()) {
                        Toast.makeText(TourDetail.this, "Delete Stop Point Success", Toast.LENGTH_LONG).show();
+                       //after deleting this stop point, the form will close and list view of stop points will be reloaded
+                       loadListStopPoints(id);
                    } else {
                        try {
                            JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -363,27 +363,6 @@ public class TourDetail extends AppCompatActivity {
     private void updateTour() {
         CreateTourRequest request = new CreateTourRequest();
         request.setName(((EditText)findViewById(R.id.editTextName)).getText().toString());
-
-        // Ngày tháng năm
-        String strDate = getDate(startDay,startMonth,startYear);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            Date date = sdf.parse(strDate);
-            startDate=date.getTime();
-        }
-        catch(Exception e) {
-            System.out.println(e);
-        }
-
-        strDate = getDate(endDay,endMonth,endYear);
-        try {
-            Date date = sdf.parse(strDate);
-            endDate=date.getTime();
-        }
-        catch(Exception e) {
-            System.out.println(e);
-        }
-
         request.setAdults(Integer.parseInt(((EditText)findViewById(R.id.editTextInputAdults)).getText().toString()));
         request.setChilds(Integer.parseInt(((EditText)findViewById(R.id.editTextInputChilds)).getText().toString()));
         request.setMaxCost(Integer.parseInt(((EditText)findViewById(R.id.editTextMaxCost)).getText().toString()));
@@ -392,7 +371,6 @@ public class TourDetail extends AppCompatActivity {
         request.setStartDate(startDate);
         request.setEndDate(endDate);
         request.setId(id);
-
 
         Call<JSONObject> call = userService.updateTour(request,token);
         call.enqueue(new Callback<JSONObject>() {
