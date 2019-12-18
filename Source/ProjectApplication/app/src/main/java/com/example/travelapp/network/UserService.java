@@ -88,4 +88,10 @@ public interface UserService {
 
     @GET("/tour/info")
     Call<TourInforResponse> getTourDetail(@Query("tourId") int tourId, @Header("Authorization") String token);
+
+    @POST("/tour/update-tour")
+    Call<JSONObject> updateTour(@Body CreateTourRequest request, @Header("Authorization") String token);
+
+    @GET("/tour/remove-stop-point")
+    Call<JSONObject>removeStopPoint(@Query("stopPointId") int id, @Header("Authorization") String token);
 }

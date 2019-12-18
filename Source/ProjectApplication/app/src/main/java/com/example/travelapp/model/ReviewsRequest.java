@@ -11,6 +11,18 @@ public class ReviewsRequest {
     @SerializedName("point")
     private int point;
 
+    public int getId() {
+        return id;
+    }
+
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
     public void setId(int id) {
         this.id = id;
     }

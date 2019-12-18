@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.travelapp.R;
 import com.example.travelapp.manager.MyApplication;
+import com.example.travelapp.model.CreateTourRequest;
 import com.example.travelapp.model.StopPointForTour;
 import com.example.travelapp.model.TourInforResponse;
 import com.example.travelapp.network.MyAPIClient;
@@ -135,6 +137,7 @@ public class TourDetail extends AppCompatActivity {
             "Bắc Kạn",
             "Cao Bằng"
     };
+    private String token;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -148,6 +151,9 @@ public class TourDetail extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+
+        MyApplication app = (MyApplication) TourDetail.this.getApplication();
+        token=app.loadToken();
 
         textViewStartDate = findViewById(R.id.textViewStartDate);
         textViewEndDate = findViewById(R.id.textViewEndDate);
@@ -206,6 +212,14 @@ public class TourDetail extends AppCompatActivity {
             }
         });
 
+        //handle save tour event
+        ((Button)findViewById(R.id.buttonSaveTour)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateTour();
+            }
+        });
+
         //handle list view item click event
         ((ListView)findViewById(R.id.listViewStopPoints)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -239,7 +253,7 @@ public class TourDetail extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //delete stop point here
-
+                deleteStopPoint(index);
                 //after deleting this stop point, the form will close and list view of stop points will be reloaded
                 loadListStopPoints(id);
             }
@@ -320,10 +334,97 @@ public class TourDetail extends AppCompatActivity {
         textViewLeaveDate.setText(df.format(itemList.get(index).getLeaveAt()));
     }
 
+    private void deleteStopPoint(int index) {
+           int idStop =  itemList.get(index).getId();
+           Call<JSONObject> call = userService.removeStopPoint(idStop, token);
+           call.enqueue(new Callback<JSONObject>() {
+               @Override
+               public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                   if (response.isSuccessful()) {
+                       Toast.makeText(TourDetail.this, "Delete Stop Point Success", Toast.LENGTH_LONG).show();
+                   } else {
+                       try {
+                           JSONObject jObjError = new JSONObject(response.errorBody().string());
+                           Toast.makeText(TourDetail.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                       } catch (Exception e) {
+                           Toast.makeText(TourDetail.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                       }
+                   }
+               }
+               @Override
+               public void onFailure(Call<JSONObject> call, Throwable t) {
+
+               }
+           });
+    }
+
+
+    // update tour khi bấm nút save
+    private void updateTour() {
+        CreateTourRequest request = new CreateTourRequest();
+        request.setName(((EditText)findViewById(R.id.editTextName)).getText().toString());
+
+        // Ngày tháng năm
+        String strDate = getDate(startDay,startMonth,startYear);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = sdf.parse(strDate);
+            startDate=date.getTime();
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
+
+        strDate = getDate(endDay,endMonth,endYear);
+        try {
+            Date date = sdf.parse(strDate);
+            endDate=date.getTime();
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
+
+        request.setAdults(Integer.parseInt(((EditText)findViewById(R.id.editTextInputAdults)).getText().toString()));
+        request.setChilds(Integer.parseInt(((EditText)findViewById(R.id.editTextInputChilds)).getText().toString()));
+        request.setMaxCost(Integer.parseInt(((EditText)findViewById(R.id.editTextMaxCost)).getText().toString()));
+        request.setMinCost(Integer.parseInt(((EditText)findViewById(R.id.editTextMinCost)).getText().toString()));
+        request.setPrivate(isPrivate);
+        request.setStartDate(startDate);
+        request.setEndDate(endDate);
+        request.setId(id);
+
+
+        Call<JSONObject> call = userService.updateTour(request,token);
+        call.enqueue(new Callback<JSONObject>() {
+            @Override
+            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                if(response.isSuccessful()){
+                    Log.d("List Stop Point", "onResponse: ");
+                    Toast.makeText(TourDetail.this,"Success", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(TourDetail.this, HistoryActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }else{
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Toast.makeText(TourDetail.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(TourDetail.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JSONObject> call, Throwable t) {
+                Log.d("List Stop Point", t.getMessage());
+
+            }
+        });
+    }
+
     public void loadListStopPoints(int tourId){
         //load token from shared preferences
-        MyApplication app = (MyApplication) TourDetail.this.getApplication();
-        String token=app.loadToken();
+
 
         Call<TourInforResponse> call = userService.getTourDetail(tourId,token);
 

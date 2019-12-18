@@ -3,6 +3,9 @@ package com.example.travelapp.model;
 import com.google.gson.annotations.SerializedName;
 
 public class CreateTourRequest {
+    @SerializedName("id")
+    private int id;
+
     @SerializedName("name")
     private String name;
     @SerializedName("startDate")
@@ -27,6 +30,10 @@ public class CreateTourRequest {
     private double desLat=0;
     @SerializedName("desLong")
     private double desLong=0;
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public void setName(String name) {
         this.name = name;

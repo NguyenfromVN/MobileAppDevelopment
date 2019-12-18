@@ -262,7 +262,7 @@ public class SearchExploreActivity extends AppCompatActivity implements AdapterV
                         itemList.add(listStopPoints.get(i));
 
                     }
-                    total_pages=(int)Math.round(response.body().getTotal()+0.5);
+                    total_pages=((int)Math.ceil(response.body().getTotal()*1.0/per_page));
                     adapter = new ArrayAdapter<>(SearchExploreActivity.this, android.R.layout.simple_list_item_1, itemList);
                     lw.setAdapter(adapter);
                 }
