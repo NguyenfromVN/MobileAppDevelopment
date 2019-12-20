@@ -4,6 +4,7 @@
     <string name="saved_access_token">login_access_token</string>
     <string name="saved_access_token_time">login_access_token_time</string>
     <string name="saved_token">login_token</string>
+    <string name="saved_fcm_token">fcm_token</string>
     // save userinfor
     <string name= "saved_name">full_name</string>
     <string name= "saved_phone">phone</string>
