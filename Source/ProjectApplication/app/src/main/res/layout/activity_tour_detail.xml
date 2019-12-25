@@ -18,32 +18,22 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Save"/>
+            android:text="Save"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/btn_bg"
+            android:textColor="#ffffff"/>
 
         <Button
             android:id="@+id/buttonDelTour"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Delete"/>
-
-        <Button
-            android:id="@+id/buttonRevTour"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Review"/>
-
-
+            android:text="Delete"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/btn_bg"
+            android:textColor="#ffffff"/>
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#919191"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"

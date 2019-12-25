@@ -1,5 +1,6 @@
 package com.ygaps.travelapp.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,12 +17,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.ygaps.travelapp.R;
 import com.ygaps.travelapp.manager.MyApplication;
 import com.ygaps.travelapp.model.FbLoginRequest;
 import com.ygaps.travelapp.model.FbLoginResponse;
 import com.ygaps.travelapp.model.LoginRequest;
 import com.ygaps.travelapp.model.LoginResponse;
+import com.ygaps.travelapp.model.RegisterFirebaseRequest;
 import com.ygaps.travelapp.model.UserInforResponse;
 import com.ygaps.travelapp.network.MyAPIClient;
 import com.ygaps.travelapp.network.UserService;
@@ -51,16 +58,17 @@ public class LoginActivity extends AppCompatActivity {
     private LoginButton loginButton;
     private CallbackManager callbackManager;
     private TextView forgotPass;
+    private String android_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
-
-
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+
+        //load device_id
+        android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
         // set up
         emailPhone =(EditText) findViewById(R.id.username);
@@ -110,13 +118,27 @@ public class LoginActivity extends AppCompatActivity {
 
                             Log.d(TAG, Token);
 
+                            //get fcm token
+                            FirebaseInstanceId.getInstance().getInstanceId()
+                                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                            if (!task.isSuccessful()) {
+                                                Log.w(TAG, "getInstanceId failed", task.getException());
+                                                return;
+                                            }
 
+                                            // Get new Instance ID token
+                                            String token = task.getResult().getToken();
 
+                                            //save fcm token to shared preferences
+                                            MyApplication app = (MyApplication) LoginActivity.this.getApplication();
+                                            app.setFcmToken(token);
 
-                            Intent intent = new Intent(LoginActivity.this, ListTours.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                            LoginActivity.this.finish();
+                                            //register for receiving notification form firebase
+                                            registerFirebaseToken(token);
+                                        }
+                                    });
                         } else {
                             try {
                                 JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -283,12 +305,28 @@ public class LoginActivity extends AppCompatActivity {
 
                 Log.d(TAG,Token);
 
+                    //get fcm token
+                    FirebaseInstanceId.getInstance().getInstanceId()
+                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                    if (!task.isSuccessful()) {
+                                        Log.w(TAG, "getInstanceId failed", task.getException());
+                                        return;
+                                    }
 
-                Intent intent = new Intent(LoginActivity.this, ListTours.class);
+                                    // Get new Instance ID token
+                                    String token = task.getResult().getToken();
 
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                LoginActivity.this.finish();}
+                                    //save fcm token to shared preferences
+                                    MyApplication app = (MyApplication) LoginActivity.this.getApplication();
+                                    app.setFcmToken(token);
+
+                                    //register for receiving notification form firebase
+                                    registerFirebaseToken(token);
+                                }
+                            });
+                }
                 else{
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -309,5 +347,45 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    public void registerFirebaseToken(String fcmToken){
 
+        RegisterFirebaseRequest request=new RegisterFirebaseRequest();
+        request.setFcmToken(fcmToken);
+        request.setDeviceId(android_id);
+        request.setPlatform(1);
+        request.setAppVersion("1.0");
+
+        //userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+
+        //load token from shared preferences
+        MyApplication app = (MyApplication) LoginActivity.this.getApplication();
+        String token=app.loadToken();
+
+        Call<JSONObject> call = userService.registerFirebase(request,token);
+
+        call.enqueue(new Callback<JSONObject>() {
+            @Override
+            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                if (response.isSuccessful()) {
+                    //load list tours screen
+                    Intent intent = new Intent(LoginActivity.this, ListTours.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    LoginActivity.this.finish();
+                }
+                else {
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Toast.makeText(LoginActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<JSONObject> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 }

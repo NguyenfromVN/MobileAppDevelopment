@@ -20,17 +20,16 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
-        app:layout_anchor="@id/navi"
-        app:useCompatPadding="true"
-        app:layout_anchorGravity="end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
+        app:layout_anchor="@id/navi"
+        app:layout_anchorGravity="end"
         app:maxImageSize="50dp"
         app:srcCompat="@android:drawable/ic_input_add"
-        />
+        app:useCompatPadding="true" />
 
-<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+    <!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->
 <!--        android:id="@+id/navi"-->

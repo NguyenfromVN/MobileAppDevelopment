@@ -228,19 +228,6 @@ public class TourDetail extends AppCompatActivity {
             }
         });
 
-        //handle review
-        ((Button)findViewById(R.id.buttonRevTour)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TourDetail.this, ReviewTourActivity.class);
-                intent.putExtra("tourId", id);
-                intent.putExtra("token", token);
-                startActivity(intent);
-
-            }
-        });
-
-
         //handle list view item click event
         ((ListView)findViewById(R.id.listViewStopPoints)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -484,7 +471,10 @@ public class TourDetail extends AppCompatActivity {
                 //call members screen
                 return true;
             case R.id.rate:
-                //create rating pop-up
+                Intent intent = new Intent(TourDetail.this, ReviewTourActivity.class);
+                intent.putExtra("tourId", id);
+                intent.putExtra("token", token);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
