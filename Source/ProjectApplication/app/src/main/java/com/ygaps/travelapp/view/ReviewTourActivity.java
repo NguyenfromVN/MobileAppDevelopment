@@ -1,31 +1,31 @@
 package com.ygaps.travelapp.view;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ygaps.travelapp.R;
 import com.ygaps.travelapp.adapter.CustomListReviewStopPointAdapter;
+import com.ygaps.travelapp.adapter.ListReviewTourAdapter;
 import com.ygaps.travelapp.model.FeedBack;
+import com.ygaps.travelapp.model.Review;
 import com.ygaps.travelapp.model.ReviewResponse;
+import com.ygaps.travelapp.model.ReviewTourResponse;
 import com.ygaps.travelapp.model.ReviewsRequest;
+import com.ygaps.travelapp.model.SendReviewTour;
 import com.ygaps.travelapp.network.MyAPIClient;
 import com.ygaps.travelapp.network.UserService;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONObject;
 
@@ -36,7 +36,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ReviewFragment extends Fragment {
+public class ReviewTourActivity extends AppCompatActivity {
+
     private static String TAG="Review";
     private UserService userService;
     private String token;
@@ -44,37 +45,26 @@ public class ReviewFragment extends Fragment {
     int per_page=1000;
     int total_pages=1;
     int page=1;
-    private List<FeedBack> itemList=new ArrayList<>();
-    private CustomListReviewStopPointAdapter adapter;
+    private List<Review> itemList=new ArrayList<>();
+    private ListReviewTourAdapter adapter;
     private ListView lw;
-    private View view;
     private FloatingActionButton fab;
 
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_review, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_review_tour);
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
 
-        lw=(ListView)view.findViewById(R.id.listViewReview);
+        lw=(ListView)findViewById(R.id.listViewReviewTour);
 
-
-
-
-        //load token
-        id=getArguments().getInt("Id");
-        token = getArguments().getString("token");
+        Intent intent = getIntent();
+        token = intent.getExtras().getString("token");
+        id = intent.getExtras().getInt("tourId");
         loadReviews(token,page,per_page);
 
-        Log.d(TAG, "onCreateView: "+token);
-
-
-
-
-
         // Send review stop point when click fab button
-        fab = (FloatingActionButton)view.findViewById(R.id.floatingActionButtonRv);
+        fab = (FloatingActionButton)findViewById(R.id.floatingActionButtonRv);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +76,6 @@ public class ReviewFragment extends Fragment {
         });
 
 
-        return view;
 
     }
 
@@ -98,7 +87,7 @@ public class ReviewFragment extends Fragment {
         final int userId = id;
 
 
-        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder alert = new AlertDialog.Builder(ReviewTourActivity.this);
         alert.setTitle("Write your review");
         alert.setView(alertLayout);
         alert.setCancelable(true);
@@ -123,26 +112,26 @@ public class ReviewFragment extends Fragment {
                 else{
                     txtRv.setError(null);
 
-                    ReviewsRequest request = new ReviewsRequest();
-                    request.setId(userId);
-                    request.setFeedback(txtRv.getText().toString());
+                    SendReviewTour request = new SendReviewTour();
+                    request.setTourId(id);
+                    request.setReview(txtRv.getText().toString());
                     request.setPoint((int)ratingBar.getRating());
 
-                    Call<JSONObject> call = userService.addReview(request,token);
+                    Call<JSONObject> call = userService.sendReviewTour(token,request);
 
                     call.enqueue(new Callback<JSONObject>() {
                         @Override
                         public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
                             if(response.isSuccessful()){
-                                Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
+                                Toast.makeText(ReviewTourActivity.this, "Success", Toast.LENGTH_LONG).show();
                                 loadReviews(token,1,per_page);
 
                             }else {
                                 try {
                                     JSONObject jObjError = new JSONObject(response.errorBody().string());
-                                    Toast.makeText(getContext(), jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(ReviewTourActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
                                 } catch (Exception e) {
-                                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(ReviewTourActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                                 }
                             }
 
@@ -153,7 +142,7 @@ public class ReviewFragment extends Fragment {
 
                         }
                     });
-            }
+                }
             }
         });
 
@@ -165,33 +154,32 @@ public class ReviewFragment extends Fragment {
         itemList.clear();
 
 
-        Call<ReviewResponse> call = userService.loadReview(page,pageSize,id,token);
+        Call<ReviewTourResponse> call = userService.loadReviewTour(token, id, page, pageSize);
 
-        call.enqueue(new Callback<ReviewResponse>() {
+        call.enqueue(new Callback<ReviewTourResponse>() {
             @Override
-            public void onResponse(Call<ReviewResponse> call, Response<ReviewResponse> response) {
+            public void onResponse(Call<ReviewTourResponse> call, Response<ReviewTourResponse> response) {
                 if(response.isSuccessful()){
-                    List<FeedBack> listStopPoints=response.body().getFeedBackList();
+                    List<Review> listStopPoints=response.body().getReviewList();
                     for (int i=0; i<listStopPoints.size(); i++){
                         itemList.add(listStopPoints.get(i));
 
                     }
                     Log.d(TAG, "onResponse: ");
-                    total_pages=(int)Math.round(response.body().getTotal()+0.5);
-                    adapter = new CustomListReviewStopPointAdapter(getContext(),R.layout.item_review,itemList);
+                    adapter = new ListReviewTourAdapter(ReviewTourActivity.this,R.layout.item_review,itemList);
                     lw.setAdapter(adapter);
 
                 }
                 else{ try {
                     JSONObject jObjError = new JSONObject(response.errorBody().string());
-                    Toast.makeText(getContext(), jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ReviewTourActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ReviewTourActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }}
             }
 
             @Override
-            public void onFailure(Call<ReviewResponse> call, Throwable t) {
+            public void onFailure(Call<ReviewTourResponse> call, Throwable t) {
 
             }
         });

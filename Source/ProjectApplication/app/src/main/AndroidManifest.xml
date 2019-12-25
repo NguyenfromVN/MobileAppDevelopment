@@ -22,7 +22,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.SearchExploreActivity" />
+        <activity android:name=".view.ReviewTourActivity"
+            android:label="Review Tour"></activity>
+        <activity android:name=".view.SearchExploreActivity"
+            android:label="Search Stop Point"/>
         <activity
             android:name=".view.DetailStopPointActivity"
             android:label="@string/title_activity_detail_stop_point"
@@ -103,11 +106,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".network.MyFirebaseService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
     </application>

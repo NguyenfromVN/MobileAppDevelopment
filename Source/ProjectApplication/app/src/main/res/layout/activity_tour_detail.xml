@@ -12,12 +12,6 @@
         android:orientation="horizontal"
         android:layout_margin="5dp">
 
-        <Button
-            android:id="@+id/buttonCloseTour"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Close"/>
 
         <Button
             android:id="@+id/buttonSaveTour"
@@ -32,6 +26,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Delete"/>
+
+        <Button
+            android:id="@+id/buttonRevTour"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Review"/>
+
+
 
     </LinearLayout>
 

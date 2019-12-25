@@ -216,9 +216,30 @@ public class TourDetail extends AppCompatActivity {
         ((Button)findViewById(R.id.buttonSaveTour)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateTour();
+                updateTour(-2);
             }
         });
+
+        //handle del tour
+        ((Button)findViewById(R.id.buttonDelTour)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateTour(-1);
+            }
+        });
+
+        //handle review
+        ((Button)findViewById(R.id.buttonRevTour)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TourDetail.this, ReviewTourActivity.class);
+                intent.putExtra("tourId", id);
+                intent.putExtra("token", token);
+                startActivity(intent);
+
+            }
+        });
+
 
         //handle list view item click event
         ((ListView)findViewById(R.id.listViewStopPoints)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -360,7 +381,7 @@ public class TourDetail extends AppCompatActivity {
 
 
     // update tour khi bấm nút save
-    private void updateTour() {
+    private void updateTour(int status) {
         CreateTourRequest request = new CreateTourRequest();
         request.setName(((EditText)findViewById(R.id.editTextName)).getText().toString());
         request.setAdults(Integer.parseInt(((EditText)findViewById(R.id.editTextInputAdults)).getText().toString()));
@@ -371,6 +392,8 @@ public class TourDetail extends AppCompatActivity {
         request.setStartDate(startDate);
         request.setEndDate(endDate);
         request.setId(id);
+        if(status!=-2)
+            request.setStatus(status);
 
         Call<JSONObject> call = userService.updateTour(request,token);
         call.enqueue(new Callback<JSONObject>() {

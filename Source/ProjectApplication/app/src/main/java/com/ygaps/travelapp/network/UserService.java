@@ -18,8 +18,10 @@ import com.ygaps.travelapp.model.RegisterFirebaseRequest;
 import com.ygaps.travelapp.model.RegisterRequest;
 import com.ygaps.travelapp.model.RegisterResponse;
 import com.ygaps.travelapp.model.ReviewResponse;
+import com.ygaps.travelapp.model.ReviewTourResponse;
 import com.ygaps.travelapp.model.ReviewsRequest;
 import com.ygaps.travelapp.model.GetHistoryByStatusResponse;
+import com.ygaps.travelapp.model.SendReviewTour;
 import com.ygaps.travelapp.model.TourInforResponse;
 import com.ygaps.travelapp.model.UpdateInforRequest;
 import com.ygaps.travelapp.model.UpdatePasswordRequest;
@@ -98,4 +100,10 @@ public interface UserService {
 
     @POST("/user/notification/put-token")
     Call<JSONObject> registerFirebase(@Body RegisterFirebaseRequest request, @Header("Authorization") String token);
+
+    @GET("/tour/get/review-list")
+    Call<ReviewTourResponse>loadReviewTour(@Header("Authorization") String token, @Query("tourId") int tourId, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
+
+    @POST("/tour/add/review")
+    Call<JSONObject>sendReviewTour(@Header("Authorization") String token, @Body SendReviewTour request);
 }

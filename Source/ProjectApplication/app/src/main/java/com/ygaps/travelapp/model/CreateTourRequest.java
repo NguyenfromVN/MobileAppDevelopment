@@ -5,7 +5,8 @@ import com.google.gson.annotations.SerializedName;
 public class CreateTourRequest {
     @SerializedName("id")
     private int id;
-
+    @SerializedName("status")
+    int status;
     @SerializedName("name")
     private String name;
     @SerializedName("startDate")
@@ -30,6 +31,10 @@ public class CreateTourRequest {
     private double desLat=0;
     @SerializedName("desLong")
     private double desLong=0;
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public void setId(int id) {
         this.id = id;
