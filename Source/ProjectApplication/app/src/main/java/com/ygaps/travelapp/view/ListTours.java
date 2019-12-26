@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -123,6 +124,31 @@ public class ListTours extends AppCompatActivity {
                     page+=1;
                     loadPage(token,page,per_page);
                 }
+            }
+        });
+
+        //handle list view item click event
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent tourDetail = new Intent(ListTours.this, TourDetail.class);
+                tourDetail.putExtra("id", itemList.get(position).getId());
+                tourDetail.putExtra("status", itemList.get(position).getStatus());
+                tourDetail.putExtra("name", itemList.get(position).getName());
+                tourDetail.putExtra("minCost", Integer.valueOf(itemList.get(position).getMinCost()));
+                tourDetail.putExtra("maxCost", Integer.valueOf(itemList.get(position).getMaxCost()));
+                if (itemList.get(position).getStartDate()==null)
+                    tourDetail.putExtra("startDate", 0);
+                else
+                    tourDetail.putExtra("startDate", Long.valueOf(itemList.get(position).getStartDate()));
+
+                if(itemList.get(position).getEndDate()==null)
+                    tourDetail.putExtra("endDate", 0);
+                else
+                    tourDetail.putExtra("endDate", Long.valueOf(itemList.get(position).getEndDate()));
+                tourDetail.putExtra("adults", itemList.get(position).getAdults());
+                tourDetail.putExtra("childs", itemList.get(position).getChilds());
+                startActivity(tourDetail);
             }
         });
     }

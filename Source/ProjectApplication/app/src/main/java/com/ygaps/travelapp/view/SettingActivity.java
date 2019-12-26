@@ -64,7 +64,7 @@ public class SettingActivity extends AppCompatActivity {
         phone.setText("Phone: "+sharedPref.getString(getString(R.string.saved_phone),null));
         email.setText("Email: "+sharedPref.getString(getString(R.string.saved_email),null));
         dob.setText("Day of birth: "+sharedPref.getString(getString(R.string.saved_dob), null));
-        int gender1 = sharedPref.getInt(getString(R.string.saved_gender),0);
+        final int gender1 = sharedPref.getInt(getString(R.string.saved_gender),0);
         if(gender1==1)
            gender.setText("Gender: Male");
         else gender.setText("Gender: Female");
@@ -121,6 +121,9 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                Intent intent = new Intent(SettingActivity.this, EditProfileActivity.class);
+               intent.putExtra("name", name.getText().toString());
+               intent.putExtra("dob", dob.getText().toString());
+               intent.putExtra("gender", gender1);
                startActivity(intent);
             }
         });

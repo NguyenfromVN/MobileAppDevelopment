@@ -52,13 +52,30 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void editProfile() {
+        boolean cancel = false;
         request = new UpdateInforRequest();
-        request.setFullName(fullName.getText().toString());
-        request.setDob(dob.getText().toString());
-        int genderInt =  Integer.parseInt(gender.getText().toString());
-        request.setGender(genderInt);
+        Intent intent = getIntent();
+        if(fullName.getText().toString().length()!=0)
+            request.setFullName(fullName.getText().toString());
+        else request.setFullName(intent.getExtras().getString("name"));
+
+        if(dob.getText().toString().length()!=0)
+            request.setDob(dob.getText().toString());
+        else {
+            dob.setError("Vui lòng nhập ngày sinh!!!");
+            cancel=true;
+        }
+
+        if(gender.getText().toString().length()!=0){
+            int genderInt =  Integer.parseInt(gender.getText().toString());
+                request.setGender(genderInt);
+        }
+        else {
+            request.setGender(intent.getExtras().getInt("gender"));
+        }
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
 
+        if(cancel==false){
         MyApplication app = (MyApplication) EditProfileActivity.this.getApplication();
         String token=app.loadToken();
 
@@ -99,7 +116,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onFailure(Call<JSONObject> call, Throwable t) {
 
             }
-        });
+        });}
 
 
     }

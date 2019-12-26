@@ -61,9 +61,14 @@ public class SplashActivity extends AppCompatActivity {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-
                     Intent intent = new Intent(SplashActivity.this, ListTours.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    long time = (new Date()).getTime() / 1000;
+                    editor.putLong(getString(R.string.saved_access_token_time), time);
+                    editor.commit();
+                    Log.d("timeSplash", "run: "+time);
                     //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();

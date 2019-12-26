@@ -127,7 +127,7 @@ public class SearchExploreActivity extends AppCompatActivity implements AdapterV
 
         init();
 
-        spinner.setOnItemSelectedListener(this);
+        //spinner.setOnItemSelectedListener(this);
 
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -135,9 +135,9 @@ public class SearchExploreActivity extends AppCompatActivity implements AdapterV
             public void onClick(View v) {
                 Log.d("ID123", "onClick: "+idPronvice+" "+name);
                 closeKeyBoard();
-                if (idPronvice == -1)
-                    Toast.makeText(SearchExploreActivity.this, "Please select a province", Toast.LENGTH_LONG).show();
-                else {
+//                if (idPronvice == -1)
+//                    Toast.makeText(SearchExploreActivity.this, "Please select a province", Toast.LENGTH_LONG).show();
+//                else {
                     key = txtSearch.getText().toString();
                     if(key.length()!=0){
                         page=1;
@@ -145,7 +145,7 @@ public class SearchExploreActivity extends AppCompatActivity implements AdapterV
                     else
                         Toast.makeText(SearchExploreActivity.this, "Please fill search key", Toast.LENGTH_LONG).show();
 
-                }
+                //}
             }
         });
 
@@ -221,7 +221,7 @@ public class SearchExploreActivity extends AppCompatActivity implements AdapterV
         btnSearch=(Button)findViewById(R.id.btnSearch);
         lw = (ListView)findViewById(R.id.listViewStop);
         txtSearch = (EditText)findViewById(R.id.search);
-        spinner = (Spinner)findViewById(R.id.spinner);
+        //spinner = (Spinner)findViewById(R.id.spinner);
 
 
 
@@ -232,11 +232,11 @@ public class SearchExploreActivity extends AppCompatActivity implements AdapterV
         ArrayAdapter<String>adapter = new ArrayAdapter<String>(SearchExploreActivity.this,
                 android.R.layout.simple_spinner_item,listProvinces);
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // Specify the layout to use when the list of choices appears
         // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        //spinner.setAdapter(adapter);
 
 
     }
@@ -251,7 +251,7 @@ public class SearchExploreActivity extends AppCompatActivity implements AdapterV
         textViewCurrentPage.setText("Page\n"+page);
         Log.d("Request", "loadSearchStopPoint: "+searchKey+" "+province+" " +id+" "+per_page+" "+page+" "+token);
 
-        Call<ListStopSearch> call = userService.loadSearchStopPoint(searchKey,id,province,page,per_page,token);
+        Call<ListStopSearch> call = userService.loadSearchStopPoint(searchKey,page,per_page,token);
         call.enqueue(new Callback<ListStopSearch>() {
             @Override
             public void onResponse(Call<ListStopSearch> call, Response<ListStopSearch> response) {

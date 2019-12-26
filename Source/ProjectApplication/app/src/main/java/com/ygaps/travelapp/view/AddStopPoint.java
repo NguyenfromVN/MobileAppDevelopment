@@ -428,7 +428,8 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
                     tmp.setMaxCost(maxCost);
                     tmp.setArrivalAt(arriveDate);
                     tmp.setLeaveAt(leaveDate);
-                    tmp.setLat(currentListStopPoints.get(id).getLat());
+                    tmp.setLat(currentListStopPoints
+                            .get(id).getLat());
                     tmp.setLong(currentListStopPoints.get(id).getLong());
                     finalListStopPoints.add(tmp);
                 } else

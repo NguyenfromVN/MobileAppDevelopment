@@ -281,6 +281,7 @@ public class TourDetail extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //save changes for stop point
+                updateStopPoint(index);
 
                 //after editing this stop point, the form will close and list view of stop points will be reloaded
                 loadListStopPoints(id);
@@ -338,6 +339,11 @@ public class TourDetail extends AppCompatActivity {
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         textViewArriveDate.setText(df.format(itemList.get(index).getArrivalAt()));
         textViewLeaveDate.setText(df.format(itemList.get(index).getLeaveAt()));
+    }
+
+    private void updateStopPoint(int index) {
+
+
     }
 
     private void deleteStopPoint(int index) {

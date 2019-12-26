@@ -74,8 +74,10 @@ public interface UserService {
     @POST("/tour/set-stop-points")
     Call<AddStopPointResponse> addStopPoint(@Body AddStopPointRequest request, @Header("Authorization") String token);
 
+    //@Query("provinceId") int provinceId, @Query("provinceName") String provinceName,
     @GET("/tour/search/service")
-    Call<ListStopSearch> loadSearchStopPoint(@Query("searchKey") String searchKey, @Query("provinceId") int provinceId, @Query("provinceName") String provinceName, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize, @Header("Authorization") String Authorization);
+
+    Call<ListStopSearch> loadSearchStopPoint(@Query("searchKey") String searchKey,  @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize, @Header("Authorization") String Authorization);
 
     @GET("/tour/get/feedback-service")
     Call<ReviewResponse> loadReview(@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize, @Query("serviceId") int id, @Header("Authorization") String token);
