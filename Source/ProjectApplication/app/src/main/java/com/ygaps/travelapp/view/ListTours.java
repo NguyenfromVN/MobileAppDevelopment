@@ -165,6 +165,8 @@ public class ListTours extends AppCompatActivity {
             @Override
             public void onResponse(Call<ListToursResponse> call, Response<ListToursResponse> response) {
                 if(response.isSuccessful()){
+                    ((TextView)findViewById(R.id.total)).setText(response.body().getTotal()+" trips");
+
                     List<Tour> tours=response.body().getTours();
                     total_pages=((int)Math.ceil(response.body().getTotal()*1.0/per_page));
                     for (int i=0; i<tours.size(); i++){

@@ -27,6 +27,8 @@ import androidx.fragment.app.DialogFragment;
 
 import com.ygaps.travelapp.R;
 import com.ygaps.travelapp.manager.MyApplication;
+import com.ygaps.travelapp.model.AddStopPointRequest;
+import com.ygaps.travelapp.model.AddStopPointResponse;
 import com.ygaps.travelapp.model.CreateTourRequest;
 import com.ygaps.travelapp.model.StopPointForTour;
 import com.ygaps.travelapp.model.TourInforResponse;
@@ -270,7 +272,6 @@ public class TourDetail extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //close the form without any action
-
                 //list view of stop points will be reloaded to make sure all changes will be discarded
                 loadListStopPoints(id);
             }
@@ -280,11 +281,10 @@ public class TourDetail extends AppCompatActivity {
         builder.setNegativeButton("SAVE", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //set information from view to item list
+                itemList.get(index).setName(((EditText)customLayout.findViewById(R.id.editTextStopPointName)).getText().toString());
                 //save changes for stop point
                 updateStopPoint(index);
-
-                //after editing this stop point, the form will close and list view of stop points will be reloaded
-                loadListStopPoints(id);
             }
         });
 
@@ -341,9 +341,39 @@ public class TourDetail extends AppCompatActivity {
         textViewLeaveDate.setText(df.format(itemList.get(index).getLeaveAt()));
     }
 
-    private void updateStopPoint(int index) {
+    private void updateStopPoint(int index){
+        AddStopPointRequest Request=new AddStopPointRequest();
+        Request.setTourId(id+"");
+        List<StopPointForTour> list=new ArrayList<>();
+        list.add(itemList.get(index));
+        Request.setStopPoints(list);
 
+        Call<AddStopPointResponse> Call = userService.addStopPoint(Request,token);
 
+        Call.enqueue(new Callback<AddStopPointResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<AddStopPointResponse> call, Response<AddStopPointResponse> response) {
+                if(response.isSuccessful()) {
+                    Toast.makeText(TourDetail.this, "Update stop point successfully",
+                            Toast.LENGTH_LONG).show();
+                    //after editing this stop point, the form will close and list view of stop points will be reloaded
+                    loadListStopPoints(id);
+                }
+                else{
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Toast.makeText(TourDetail.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(TourDetail.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<AddStopPointResponse> call, Throwable t) {
+                Toast.makeText(TourDetail.this, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void deleteStopPoint(int index) {
