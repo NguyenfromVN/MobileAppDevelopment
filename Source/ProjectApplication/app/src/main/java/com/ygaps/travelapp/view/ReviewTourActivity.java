@@ -66,7 +66,7 @@ public class ReviewTourActivity extends AppCompatActivity {
         sao3 = (TextView)findViewById(R.id.st3);
         sao4 = (TextView)findViewById(R.id.st4);
         sao5 = (TextView)findViewById(R.id.st5);
-        trungbinh = (TextView)findViewById(R.id.trungbinh);
+        trungbinh = (TextView)findViewById(R.id.textViewAverage);
 
 
 
@@ -101,11 +101,11 @@ public class ReviewTourActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<TourRvStatResponse> call, Response<TourRvStatResponse> response) {
                 if(response.isSuccessful()){
-                    sao1.setText("1 Sao: "+response.body().getList().get(0).getTotal());
-                    sao2.setText("2 Sao: "+response.body().getList().get(1).getTotal());
-                    sao3.setText("3 Sao: "+response.body().getList().get(2).getTotal());
-                    sao4.setText("4 Sao: "+response.body().getList().get(3).getTotal());
-                    sao5.setText("5 Sao: "+response.body().getList().get(4).getTotal());
+                    sao1.setText(response.body().getList().get(0).getTotal());
+                    sao2.setText(response.body().getList().get(1).getTotal());
+                    sao3.setText(response.body().getList().get(2).getTotal());
+                    sao4.setText(response.body().getList().get(3).getTotal());
+                    sao5.setText(response.body().getList().get(4).getTotal());
                     long total = 0;
                     long pointTotal=0;
                     for(int i = 0; i<response.body().getList().size(); i++){
@@ -114,7 +114,10 @@ public class ReviewTourActivity extends AppCompatActivity {
                         pointTotal+=Integer.parseInt(response.body().getList().get(i).getTotal())*(i+1);
                         Log.d(TAG, "onResponse: "+pointTotal);
                     }
-                    trungbinh.setText("Trung bình: "+Long.toString(pointTotal/total));
+                    double avg=0;
+                    if (total>0)
+                        avg=pointTotal*1.0/total;
+                    trungbinh.setText(String.format("%.1f",avg));
 
                 }
                 else{

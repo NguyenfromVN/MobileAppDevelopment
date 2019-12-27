@@ -15,61 +15,193 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/trungbinh"
-                android:layout_width="wrap_content"
+                android:id="@+id/textViewAverage"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:text="4.0"
+                android:textSize="60sp"
+                android:layout_weight="1.4"
                 />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/st1"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                     />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/st2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1.4"
+                        android:layout_height="wrap_content"
+                        android:text="1 star"
+                        android:textStyle="bold"
+                        />
 
-                <TextView
-                    android:id="@+id/st3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                     />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="x"
+                        />
 
-                <TextView
-                    android:id="@+id/st4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                    <TextView
+                        android:id="@+id/st1"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textStyle="bold"
+                        />
 
-                <TextView
-                    android:id="@+id/st5"
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1.4"
+                        android:layout_height="wrap_content"
+                        android:text="2 stars"
+                        android:textStyle="bold"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="x"
+                        />
+
+                    <TextView
+                        android:id="@+id/st2"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textStyle="bold"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1.4"
+                        android:layout_height="wrap_content"
+                        android:text="3 stars"
+                        android:textStyle="bold"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="x"
+                        />
+
+                    <TextView
+                        android:id="@+id/st3"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textStyle="bold"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1.4"
+                        android:layout_height="wrap_content"
+                        android:text="4 stars"
+                        android:textStyle="bold"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="x"
+                        />
+
+                    <TextView
+                        android:id="@+id/st4"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textStyle="bold"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1.4"
+                        android:layout_height="wrap_content"
+                        android:text="5 stars"
+                        android:textStyle="bold"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="x"
+                        />
+
+                    <TextView
+                        android:id="@+id/st5"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textStyle="bold"
+                        />
+
+                </LinearLayout>
+
             </LinearLayout>
+
         </LinearLayout>
 
         <ListView
             android:id="@+id/listViewReviewTour"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:layout_weight="5" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"/>
 
     </LinearLayout>
 
