@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/grad_bg"
+    android:padding="@dimen/fab_margin">
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/txtName"
+        android:text="Name"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/et_bg"
+        android:padding="@dimen/fab_margin"
+        android:textColor="@color/white"
+        android:textSize="20dp" />
+
+
+    <TextView
+        android:id="@+id/cmt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/txtRv"
+        android:text="Phone Number"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/txtRv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/et_bg"
+        android:padding="@dimen/fab_margin"
+        android:textColor="@color/white"
+        android:textSize="20dp" />
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Host"
+        android:enabled="false"
+        android:id="@+id/checkBoxIsPrivate"
+        android:layout_marginBottom="5dp"/>
+</LinearLayout>

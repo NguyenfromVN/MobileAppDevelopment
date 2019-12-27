@@ -13,4 +13,8 @@
     <item android:id="@+id/rate"
         android:title="Rate this tour"
         app:showAsAction="never"/>
+
+    <item android:id="@+id/comment"
+        android:title="Comment"
+        app:showAsAction="never"/>
 </menu>

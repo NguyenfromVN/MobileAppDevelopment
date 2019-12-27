@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,6 +25,8 @@ import com.ygaps.travelapp.model.ReviewResponse;
 import com.ygaps.travelapp.model.ReviewTourResponse;
 import com.ygaps.travelapp.model.ReviewsRequest;
 import com.ygaps.travelapp.model.SendReviewTour;
+import com.ygaps.travelapp.model.Tour;
+import com.ygaps.travelapp.model.TourRvStatResponse;
 import com.ygaps.travelapp.network.MyAPIClient;
 import com.ygaps.travelapp.network.UserService;
 
@@ -49,6 +52,7 @@ public class ReviewTourActivity extends AppCompatActivity {
     private ListReviewTourAdapter adapter;
     private ListView lw;
     private FloatingActionButton fab;
+    private TextView sao1, sao2, sao3, sao4, sao5, trungbinh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +60,22 @@ public class ReviewTourActivity extends AppCompatActivity {
         setContentView(R.layout.activity_review_tour);
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
 
+
+        sao1 = (TextView)findViewById(R.id.st1);
+        sao2 = (TextView)findViewById(R.id.st2);
+        sao3 = (TextView)findViewById(R.id.st3);
+        sao4 = (TextView)findViewById(R.id.st4);
+        sao5 = (TextView)findViewById(R.id.st5);
+        trungbinh = (TextView)findViewById(R.id.trungbinh);
+
+
+
         lw=(ListView)findViewById(R.id.listViewReviewTour);
 
         Intent intent = getIntent();
         token = intent.getExtras().getString("token");
         id = intent.getExtras().getInt("tourId");
+        loadStats(token, id);
         loadReviews(token,page,per_page);
 
         // Send review stop point when click fab button
@@ -75,6 +90,48 @@ public class ReviewTourActivity extends AppCompatActivity {
 
         });
 
+
+
+    }
+
+    private void loadStats(String token, int id) {
+        Call<TourRvStatResponse> call = userService.statRvTour(token, id);
+
+        call.enqueue(new Callback<TourRvStatResponse>() {
+            @Override
+            public void onResponse(Call<TourRvStatResponse> call, Response<TourRvStatResponse> response) {
+                if(response.isSuccessful()){
+                    sao1.setText("1 Sao: "+response.body().getList().get(0).getTotal());
+                    sao2.setText("2 Sao: "+response.body().getList().get(1).getTotal());
+                    sao3.setText("3 Sao: "+response.body().getList().get(2).getTotal());
+                    sao4.setText("4 Sao: "+response.body().getList().get(3).getTotal());
+                    sao5.setText("5 Sao: "+response.body().getList().get(4).getTotal());
+                    long total = 0;
+                    long pointTotal=0;
+                    for(int i = 0; i<response.body().getList().size(); i++){
+                        total+=Integer.parseInt(response.body().getList().get(i).getTotal());
+                        Log.d(TAG, "onResponse: "+total);
+                        pointTotal+=Integer.parseInt(response.body().getList().get(i).getTotal())*(i+1);
+                        Log.d(TAG, "onResponse: "+pointTotal);
+                    }
+                    trungbinh.setText("Trung bình: "+Long.toString(pointTotal/total));
+
+                }
+                else{
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Toast.makeText(ReviewTourActivity.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(ReviewTourActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TourRvStatResponse> call, Throwable t) {
+
+            }
+        });
 
 
     }
@@ -125,6 +182,7 @@ public class ReviewTourActivity extends AppCompatActivity {
                             if(response.isSuccessful()){
                                 Toast.makeText(ReviewTourActivity.this, "Success", Toast.LENGTH_LONG).show();
                                 loadReviews(token,1,per_page);
+                                loadStats(token, id);
 
                             }else {
                                 try {

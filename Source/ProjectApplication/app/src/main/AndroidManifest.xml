@@ -22,12 +22,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.ReviewTourActivity"
-            android:label="Review Tour"></activity>
-        <activity android:name=".view.NotificationTab"
-            android:label="Notifications"></activity>
-        <activity android:name=".view.SearchExploreActivity"
-            android:label="Search Stop Point"/>
+        <activity android:name=".view.SearchUserActivity"
+            android:label="Search User"></activity>
+        <activity
+            android:name=".view.CommentActivity"
+            android:label="Comment" />
+        <activity
+            android:name=".view.MemberActivity"
+            android:label="Member" />
+        <activity
+            android:name=".view.ReviewTourActivity"
+            android:label="Review Tour" />
+        <activity
+            android:name=".view.NotificationTab"
+            android:label="Notifications" />
+        <activity
+            android:name=".view.SearchExploreActivity"
+            android:label="Search Stop Point" />
         <activity
             android:name=".view.DetailStopPointActivity"
             android:label="@string/title_activity_detail_stop_point"

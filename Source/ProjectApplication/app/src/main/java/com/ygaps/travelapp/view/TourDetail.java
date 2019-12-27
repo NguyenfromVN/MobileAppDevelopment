@@ -504,7 +504,10 @@ public class TourDetail extends AppCompatActivity {
                 //call chatting screen
                 return true;
             case R.id.member:
-                //call members screen
+                Intent intent1 = new Intent(TourDetail.this, MemberActivity.class);
+                intent1.putExtra("tourId", id);
+                intent1.putExtra("token", token);
+                startActivity(intent1);
                 return true;
             case R.id.rate:
                 Intent intent = new Intent(TourDetail.this, ReviewTourActivity.class);
@@ -512,6 +515,14 @@ public class TourDetail extends AppCompatActivity {
                 intent.putExtra("token", token);
                 startActivity(intent);
                 return true;
+            case R.id.comment:
+                Intent intent2 = new Intent(TourDetail.this, CommentActivity.class);
+                intent2.putExtra("tourId", id);
+                intent2.putExtra("token", token);
+                Log.d("TourDetail", "onOptionsItemSelected: "+token);
+                startActivity(intent2);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -35,6 +35,20 @@ public class TourInforResponse {
     @SerializedName("stopPoints")
     private List<StopPointForTour> stopPoints;
 
+    @SerializedName("members")
+    private List<Member> members;
+
+    @SerializedName("comments")
+    private List<Comments> comments;
+
+    public List<Member> getMembers() {
+        return members;
+    }
+
+    public List<Comments> getComments() {
+        return comments;
+    }
+
     public String getHostId() {
         return hostId;
     }

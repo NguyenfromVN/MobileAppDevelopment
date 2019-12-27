@@ -3,10 +3,12 @@ package com.ygaps.travelapp.network;
 import com.ygaps.travelapp.model.AcceptInvitationRequest;
 import com.ygaps.travelapp.model.AddStopPointRequest;
 import com.ygaps.travelapp.model.AddStopPointResponse;
+import com.ygaps.travelapp.model.CommentResponse;
 import com.ygaps.travelapp.model.CreateTourRequest;
 import com.ygaps.travelapp.model.CreateTourResponse;
 import com.ygaps.travelapp.model.FbLoginRequest;
 import com.ygaps.travelapp.model.FbLoginResponse;
+import com.ygaps.travelapp.model.InvitedRequest;
 import com.ygaps.travelapp.model.ListStopSearch;
 import com.ygaps.travelapp.model.ListToursResponse;
 import com.ygaps.travelapp.model.LoadListStopPointRequest;
@@ -23,8 +25,10 @@ import com.ygaps.travelapp.model.ReviewResponse;
 import com.ygaps.travelapp.model.ReviewTourResponse;
 import com.ygaps.travelapp.model.ReviewsRequest;
 import com.ygaps.travelapp.model.GetHistoryByStatusResponse;
+import com.ygaps.travelapp.model.SearchUserResponse;
 import com.ygaps.travelapp.model.SendReviewTour;
 import com.ygaps.travelapp.model.TourInforResponse;
+import com.ygaps.travelapp.model.TourRvStatResponse;
 import com.ygaps.travelapp.model.UpdateInforRequest;
 import com.ygaps.travelapp.model.UpdatePasswordRequest;
 import com.ygaps.travelapp.model.UserInforResponse;
@@ -116,4 +120,19 @@ public interface UserService {
 
     @POST("/tour/response/invitation")
     Call<JSONObject>confirmInvitation(@Header("Authorization") String token, @Body AcceptInvitationRequest request);
+
+    @GET("/tour/get/review-point-stats")
+    Call<TourRvStatResponse>statRvTour(@Header("Authorization") String token, @Query("tourId") int tourId);
+
+    @GET("/tour/get/feedback-point-stats")
+    Call<TourRvStatResponse>statSpTour(@Header("Authorization") String token, @Query("serviceId") int serviceId);
+
+    @GET("/user/search")
+    Call<SearchUserResponse>searchUser(@Query("searchKey") String key,@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize,@Header("Authorization") String token);
+
+    @POST("/tour/add/member")
+    Call<JSONObject>addMember(@Header("Authorization") String token, @Body InvitedRequest request);
+
+    @GET("/tour/comment-list")
+    Call<CommentResponse>getListCmt(@Header("Authorization") String token, @Query("tourId") int tourId, @Query("pageSize") int pageSize, @Query("pageIndex") int pageIndex);
 }

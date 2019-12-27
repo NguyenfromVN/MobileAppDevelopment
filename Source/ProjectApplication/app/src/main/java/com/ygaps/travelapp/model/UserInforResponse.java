@@ -1,5 +1,7 @@
 package com.ygaps.travelapp.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 public class UserInforResponse {
@@ -17,7 +19,6 @@ public class UserInforResponse {
     private String dob;
     @SerializedName("gender")
     private int gender;
-
     @SerializedName("avatar")
     String avatar;
 
@@ -85,5 +86,9 @@ public class UserInforResponse {
         this.gender = gender;
     }
 
-
+    @NonNull
+    @Override
+    public String toString() {
+        return this.full_name+"\n"+this.phone;
+    }
 }
