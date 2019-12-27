@@ -71,6 +71,7 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
     private String TAG="AddStopPoint";
     private List<StopPointForTour> currentListStopPoints=new ArrayList<>();
     private List<StopPointForTour> finalListStopPoints=new ArrayList<>();
+    private List<StopPoint> newStopPoints=new ArrayList<>();
     private static int arriveDay,arriveMonth,arriveYear;
     private static int leaveDay,leaveMonth,leaveYear;
     private long leaveDate, arriveDate;
@@ -79,6 +80,7 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
     private static TextView textViewArriveDate;
     private static TextView textViewLeaveDate;
     private String tourId;
+    private boolean isNew=false;
     private String[] listProvinces= {
             "",
             "Hồ Chí Minh",
@@ -258,6 +260,7 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finalListStopPoints.clear();
+                newStopPoints.clear();
             }
         });
 
@@ -355,6 +358,9 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                //change value of isNew flag
+                isNew=false;
+
                 //get id of selected marker in currentListStopPoints
                 int id=Integer.valueOf(marker.getTag().toString());
 
@@ -362,6 +368,33 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
                 createAddStopPointForm(id);
 
                 return true;
+            }
+        });
+
+        //add new stop point with long-click handler
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                //change value of isNew flag
+                isNew=true;
+
+                //add new item to currentListStopPoints
+                currentListStopPoints.add(new StopPointForTour());
+
+                //get index of new item in currentListStopPoints
+                int id=currentListStopPoints.size()-1;
+
+                //set data for this new item
+                currentListStopPoints.get(id).setId(null);
+                currentListStopPoints.get(id).setName("");
+                currentListStopPoints.get(id).setLat(latLng.latitude);
+                currentListStopPoints.get(id).setLong(latLng.longitude);
+                currentListStopPoints.get(id).setServiceTypeId(4);
+                currentListStopPoints.get(id).setMinCost(0);
+                currentListStopPoints.get(id).setMaxCost(0);
+
+                //create form for new stop point
+                createAddStopPointForm(id);
             }
         });
     }
@@ -422,16 +455,33 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
                     StopPointForTour tmp=new StopPointForTour();
                     tmp.setName(stopPointName);
                     tmp.setServiceTypeId((currentListStopPoints.get(id).getServiceTypeId()));
-                    tmp.setAddress(currentListStopPoints.get(id).getAddress());
-                    tmp.setProvinceId(currentListStopPoints.get(id).getProvinceId());
+                    tmp.setAddress(((EditText)customLayout.findViewById(R.id.editTextAddress)).getText().toString());
+                    if (isNew){
+                        currentListStopPoints.get(id).setProvinceId(0);
+                        String str=((EditText)customLayout.findViewById(R.id.editTextProvince)).getText().toString();
+                        for (int i=1; i<listProvinces.length; i++)
+                            if (str.equals(listProvinces[i]))
+                                currentListStopPoints.get(id).setProvinceId(i);
+                        tmp.setProvinceId(currentListStopPoints.get(id).getProvinceId());
+                    } else
+                        tmp.setProvinceId(currentListStopPoints.get(id).getProvinceId());
                     tmp.setMinCost(minCost);
                     tmp.setMaxCost(maxCost);
                     tmp.setArrivalAt(arriveDate);
                     tmp.setLeaveAt(leaveDate);
-                    tmp.setLat(currentListStopPoints
-                            .get(id).getLat());
+                    tmp.setLat(currentListStopPoints.get(id).getLat());
                     tmp.setLong(currentListStopPoints.get(id).getLong());
                     finalListStopPoints.add(tmp);
+                    if (isNew) {
+                        StopPoint stp=new StopPoint();
+                        stp.setName(tmp.getName());
+                        stp.setAddress(((EditText)customLayout.findViewById(R.id.editTextAddress)).getText().toString());
+                        stp.setProvinceId(tmp.getProvinceId());
+                        stp.setLat(tmp.getLat());
+                        stp.setLong(tmp.getLong());
+                        stp.setServiceTypeId(tmp.getServiceTypeId());
+                        newStopPoints.add(stp);
+                    }
                 } else
                     Toast.makeText(AddStopPoint.this, "Can not add stop point\nPlease fulfill the form to do this",
                             Toast.LENGTH_LONG).show();
@@ -440,6 +490,7 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
                 LatLng position=new LatLng(currentListStopPoints.get(id).getLat(),
                         currentListStopPoints.get(id).getLong());
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position,15),1000,null);
+
             }
         });
 
@@ -457,6 +508,12 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
         // create and show the alert dialog
         AlertDialog dialog = builder.create();
         dialog.show();
+
+        //if isNew is true then user can edit some extra information on this form
+        if (isNew){
+            dialog.findViewById(R.id.editTextAddress).setEnabled(true);
+            dialog.findViewById(R.id.editTextProvince).setEnabled(true);
+        }
 
         //add listener for date pickers
         dialog.findViewById(R.id.buttonArriveAt).setOnClickListener(new View.OnClickListener() {
@@ -592,6 +649,10 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
                 if(response.isSuccessful()) {
                     List<StopPoint> listStopPoints=response.body().getStopPoints();
                     currentListStopPoints.clear();
+
+                    //add new stop points to create their markers on the map
+                    listStopPoints.addAll(newStopPoints);
+
                     //add marker when view is changed
                     for (int i=0; i<listStopPoints.size(); i++){
                         LatLng position=new LatLng(listStopPoints.get(i).getLat(),

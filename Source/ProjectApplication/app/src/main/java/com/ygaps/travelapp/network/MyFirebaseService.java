@@ -20,6 +20,7 @@ import com.ygaps.travelapp.view.HistoryActivity;
 import com.ygaps.travelapp.view.ListTours;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.ygaps.travelapp.view.NotificationTab;
 
 import java.util.Map;
 
@@ -41,13 +42,10 @@ public class MyFirebaseService extends FirebaseMessagingService {
     }
 
     private void sendNotification(Map<String,String> messageBody) {
-        Intent intent = new Intent(this, ListTours.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-        Intent intent2 = new Intent(this, HistoryActivity.class);
-        intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent2 = PendingIntent.getActivity(this, 0, intent2, PendingIntent.FLAG_ONE_SHOT);
 
+        Intent intent1 = new Intent(this, NotificationTab.class);
+        intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent1 = PendingIntent.getActivity(this, 0, intent1, PendingIntent.FLAG_ONE_SHOT);
 
         String channelId = getString(R.string.project_id);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -62,14 +60,10 @@ public class MyFirebaseService extends FirebaseMessagingService {
                         .setContentText(content)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent2)
+                        .setContentIntent(pendingIntent1)
                         .setDefaults(Notification.DEFAULT_ALL)
                         .setWhen(0)
-                        .setPriority(NotificationManager.IMPORTANCE_HIGH)
-                        .addAction(android.R.drawable.sym_call_missed,"ACCEPT",
-                                PendingIntent.getActivity(this, 0, intent2, PendingIntent.FLAG_CANCEL_CURRENT))
-                        .addAction(android.R.drawable.sym_call_outgoing,"DENY",
-                                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT));
+                        .setPriority(NotificationManager.IMPORTANCE_HIGH);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 

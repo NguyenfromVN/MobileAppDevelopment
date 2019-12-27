@@ -377,7 +377,7 @@ public class TourDetail extends AppCompatActivity {
     }
 
     private void deleteStopPoint(int index) {
-        int idStop =  itemList.get(index).getId();
+        int idStop =  Integer.valueOf(itemList.get(index).getId());
         Call<JSONObject> call = userService.removeStopPoint(idStop, token);
         call.enqueue(new Callback<JSONObject>() {
             @Override

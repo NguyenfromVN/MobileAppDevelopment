@@ -75,6 +75,11 @@ public class ExploreActivity extends AppCompatActivity {
                         intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent1);
                         break;
+                    case R.id.noti:
+                        Intent intent3 = new Intent(ExploreActivity.this, NotificationTab.class);
+                        intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent3);
+                        break;
                 }
                 return false;
             }

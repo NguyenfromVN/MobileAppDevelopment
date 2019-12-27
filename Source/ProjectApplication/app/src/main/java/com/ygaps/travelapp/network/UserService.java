@@ -1,5 +1,6 @@
 package com.ygaps.travelapp.network;
 
+import com.ygaps.travelapp.model.AcceptInvitationRequest;
 import com.ygaps.travelapp.model.AddStopPointRequest;
 import com.ygaps.travelapp.model.AddStopPointResponse;
 import com.ygaps.travelapp.model.CreateTourRequest;
@@ -10,6 +11,7 @@ import com.ygaps.travelapp.model.ListStopSearch;
 import com.ygaps.travelapp.model.ListToursResponse;
 import com.ygaps.travelapp.model.LoadListStopPointRequest;
 import com.ygaps.travelapp.model.LoadListStopPointResponse;
+import com.ygaps.travelapp.model.LoadNotificationsResponse;
 import com.ygaps.travelapp.model.LoginRequest;
 import com.ygaps.travelapp.model.LoginResponse;
 import com.ygaps.travelapp.model.OTPRequest;
@@ -108,4 +110,10 @@ public interface UserService {
 
     @POST("/tour/add/review")
     Call<JSONObject>sendReviewTour(@Header("Authorization") String token, @Body SendReviewTour request);
+
+    @GET("/tour/get/invitation")
+    Call<LoadNotificationsResponse>loadNotifications(@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize, @Header("Authorization") String token);
+
+    @POST("/tour/response/invitation")
+    Call<JSONObject>confirmInvitation(@Header("Authorization") String token, @Body AcceptInvitationRequest request);
 }

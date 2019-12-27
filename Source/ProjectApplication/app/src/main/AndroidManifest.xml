@@ -24,6 +24,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".view.ReviewTourActivity"
             android:label="Review Tour"></activity>
+        <activity android:name=".view.NotificationTab"
+            android:label="Notifications"></activity>
         <activity android:name=".view.SearchExploreActivity"
             android:label="Search Stop Point"/>
         <activity

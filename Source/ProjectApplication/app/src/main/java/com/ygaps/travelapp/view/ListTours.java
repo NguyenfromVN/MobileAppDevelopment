@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -56,7 +57,6 @@ public class ListTours extends AppCompatActivity {
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
 
         BottomNavigationView bottomNav= (BottomNavigationView) findViewById(R.id.navi);
-
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -76,6 +76,11 @@ public class ListTours extends AppCompatActivity {
                         Intent intent1 = new Intent(ListTours.this, ExploreActivity.class);
                         intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent1);
+                        break;
+                    case R.id.noti:
+                        Intent intent3 = new Intent(ListTours.this, NotificationTab.class);
+                        intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent3);
                         break;
                 }
                 return false;

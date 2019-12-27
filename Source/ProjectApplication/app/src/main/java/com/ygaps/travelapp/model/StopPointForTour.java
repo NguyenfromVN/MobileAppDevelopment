@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 public class StopPointForTour {
 
     @SerializedName("id")
-    private int id;
+    private String id;
     @SerializedName("serviceId")
     private int serviceId;
     @SerializedName("address")
@@ -67,7 +67,7 @@ public class StopPointForTour {
 
     public void setMaxCost(int maxCost) { this.maxCost = maxCost; }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(String id) { this.id = id; }
 
     public void setServiceId(int serviceId) { this.serviceId = serviceId; }
 
@@ -113,7 +113,7 @@ public class StopPointForTour {
         return maxCost;
     }
 
-    public int getId() { return id; }
+    public String getId() { return id; }
 
     public int getServiceId() { return serviceId; }
 
