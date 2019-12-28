@@ -58,6 +58,7 @@ public class TourDetail extends AppCompatActivity {
     private static long endDate;
     private int adults;
     private int childs;
+    private Button review;
     private static int flagStartDate=0;
     private static int flagEndDate=0;
     private static int startYear, startMonth, startDay;
@@ -339,6 +340,18 @@ public class TourDetail extends AppCompatActivity {
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         textViewArriveDate.setText(df.format(itemList.get(index).getArrivalAt()));
         textViewLeaveDate.setText(df.format(itemList.get(index).getLeaveAt()));
+
+        review = (Button)dialog.findViewById(R.id.btn_review);
+        review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TourDetail.this, ReviewStopPointActivity.class);
+                intent.putExtra("stopPointId", itemList.get(index).getId());
+                intent.putExtra("token", token);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
     }
 
     private void updateStopPoint(int index){

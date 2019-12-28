@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ public class HistoryActivity extends AppCompatActivity {
     private int total_pages=1;
     private int page=1;
     private int total=0;
+    private Button search_Btn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,13 +93,25 @@ public class HistoryActivity extends AppCompatActivity {
         });
 
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
-
         //load token from shared preferences
         MyApplication app = (MyApplication) HistoryActivity.this.getApplication();
         token=app.loadToken();
 
+
+        //search
+        search_Btn = (Button)findViewById(R.id.searchTour);
+        search_Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HistoryActivity.this, SearchTourActivity.class);
+                intent.putExtra("token", token);
+                startActivity(intent);
+            }
+        });
+
+
         //send request for list tours of user
-        loadPage(token,1,per_page);
+        loadPage(token,1,1000);
 
         //send request for statistics
         loadstatistics(token);
@@ -109,29 +123,8 @@ public class HistoryActivity extends AppCompatActivity {
 
         listView.setAdapter(adapter);
 
-        //handle page down button click event
-        ImageView backButton=findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if (page-1>=1){
-                    page-=1;
-                    loadPage(token,page,per_page);
-                }
-            }
-        });
 
-        //handle page up button click event
-        ImageView forwardButton=findViewById(R.id.forwardButton);
-        forwardButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if (page+1<=total_pages){
-                    page+=1;
-                    loadPage(token,page,per_page);
-                }
-            }
-        });
+
 
         //handle list view item click event
         ((ListView)findViewById(R.id.listViewUserTours)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -194,8 +187,6 @@ public class HistoryActivity extends AppCompatActivity {
 
         itemList.clear();
 
-        TextView textViewCurrentPage=findViewById(R.id.textViewCurrentPage);
-        textViewCurrentPage.setText("Page\n"+page);
 
         Call<ListToursResponse> call = userService.loadListToursOfUser(page,per_page,token);
 
@@ -210,6 +201,7 @@ public class HistoryActivity extends AppCompatActivity {
                     total_pages=((int)Math.ceil(total*1.0/per_page));
                     List<Tour> tours=response.body().getTours();
                     for (int i=0; i<tours.size(); i++){
+                        if(tours.get(i).getStatus()!=-1){
                         Tour x=tours.get(i);
                         Item tmp=new Item(
                                 0,0,"","","",
@@ -228,7 +220,7 @@ public class HistoryActivity extends AppCompatActivity {
                         tmp.setAvatar(x.getAvatar());
 
                         itemList.add(tmp);
-                        adapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();}
                     }
                 }
                 else{

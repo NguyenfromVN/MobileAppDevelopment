@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -59,6 +60,7 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private String name;
+    private String stopPointId;
     private long startDate;
     private long endDate;
     private int adults;
@@ -81,6 +83,7 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
     private static TextView textViewLeaveDate;
     private String tourId;
     private boolean isNew=false;
+    private Button review;
     private String[] listProvinces= {
             "",
             "Hồ Chí Minh",
@@ -164,10 +167,13 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
         maxCost=activityThatCalled.getExtras().getInt("maxCost");
         isPrivate=activityThatCalled.getExtras().getBoolean("isPrivate");
 
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
 
         //show list of current stop points
         FloatingActionButton fab = findViewById(R.id.fab2);
@@ -290,6 +296,8 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
             else
                 tmp+="\n"+i+". "+finalListStopPoints.get(i).getName();
         ((TextView)dialog.findViewById(R.id.textViewListStopPoints)).setText(tmp);
+
+
     }
 
     private void createAddStopPointRequest(){
@@ -469,6 +477,8 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
                     tmp.setMaxCost(maxCost);
                     tmp.setArrivalAt(arriveDate);
                     tmp.setLeaveAt(leaveDate);
+                    stopPointId = currentListStopPoints.get(id).getId();
+                    Log.d(TAG, "onClick: "+stopPointId);
                     tmp.setLat(currentListStopPoints.get(id).getLat());
                     tmp.setLong(currentListStopPoints.get(id).getLong());
                     finalListStopPoints.add(tmp);
@@ -491,8 +501,12 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
                         currentListStopPoints.get(id).getLong());
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position,15),1000,null);
 
+
             }
         });
+
+        //review button
+
 
         //add Cancel button
         builder.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -508,6 +522,20 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
         // create and show the alert dialog
         AlertDialog dialog = builder.create();
         dialog.show();
+
+
+        //Review
+        review = (Button)dialog.findViewById(R.id.btn_review);
+        review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddStopPoint.this, ReviewStopPointActivity.class);
+                intent.putExtra("stopPointId", currentListStopPoints.get(id).getId());
+                intent.putExtra("token", token);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
 
         //if isNew is true then user can edit some extra information on this form
         if (isNew){
@@ -666,7 +694,10 @@ public class AddStopPoint extends AppCompatActivity implements OnMapReadyCallbac
                         tmp.setLat(listStopPoints.get(i).getLat());
                         tmp.setLong(listStopPoints.get(i).getLong());
                         tmp.setServiceTypeId(listStopPoints.get(i).getServiceTypeId());
+                        tmp.setId(""+listStopPoints.get(i).getId());
+                        Log.d(TAG, "onResponse: id"+listStopPoints.get(i).getId());
                         currentListStopPoints.add(tmp);
+
                     }
                 }
                 else{

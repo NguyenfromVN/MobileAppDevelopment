@@ -22,8 +22,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.SearchUserActivity"
-            android:label="Search User"></activity>
+        <activity android:name=".view.SearchTourActivity"></activity>
+        <activity android:name=".view.ReviewStopPointActivity" />
+        <activity
+            android:name=".view.SearchUserActivity"
+            android:label="Search User" />
         <activity
             android:name=".view.CommentActivity"
             android:label="Comment" />

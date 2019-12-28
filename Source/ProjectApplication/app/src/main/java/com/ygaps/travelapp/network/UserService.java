@@ -130,6 +130,9 @@ public interface UserService {
     @GET("/user/search")
     Call<SearchUserResponse>searchUser(@Query("searchKey") String key,@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize,@Header("Authorization") String token);
 
+   @GET("/tour/search-history-user")
+   Call<ListToursResponse>searchTour(@Query("searchKey") String key,@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize,@Header("Authorization") String token);
+
     @POST("/tour/add/member")
     Call<JSONObject>addMember(@Header("Authorization") String token, @Body InvitedRequest request);
 
