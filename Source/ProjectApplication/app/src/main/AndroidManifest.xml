@@ -24,6 +24,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".view.SearchTourActivity"></activity>
         <activity android:name=".view.ReviewStopPointActivity" />
+        <activity android:name=".view.TrackTourActivity"
+            android:label="Track Tour"></activity>
         <activity
             android:name=".view.SearchUserActivity"
             android:label="Search User" />
@@ -122,13 +124,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <service
             android:name=".network.MyFirebaseService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
+        </service>
+        <service
+            android:name=".network.LocationService"
+            android:exported="false">
         </service>
     </application>
 

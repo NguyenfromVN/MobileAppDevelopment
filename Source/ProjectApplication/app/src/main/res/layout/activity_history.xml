@@ -164,14 +164,6 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"/>
 
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#919191"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"/>
-
     <ListView
         android:id="@+id/listViewUserTours"
         android:layout_width="match_parent"

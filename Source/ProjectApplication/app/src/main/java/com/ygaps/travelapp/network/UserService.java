@@ -4,10 +4,13 @@ import com.ygaps.travelapp.model.AcceptInvitationRequest;
 import com.ygaps.travelapp.model.AddStopPointRequest;
 import com.ygaps.travelapp.model.AddStopPointResponse;
 import com.ygaps.travelapp.model.CommentResponse;
+import com.ygaps.travelapp.model.CreateNotificationOnRoad;
 import com.ygaps.travelapp.model.CreateTourRequest;
 import com.ygaps.travelapp.model.CreateTourResponse;
 import com.ygaps.travelapp.model.FbLoginRequest;
 import com.ygaps.travelapp.model.FbLoginResponse;
+import com.ygaps.travelapp.model.GetLocationRequest;
+import com.ygaps.travelapp.model.GetLocationResponse;
 import com.ygaps.travelapp.model.InvitedRequest;
 import com.ygaps.travelapp.model.ListStopSearch;
 import com.ygaps.travelapp.model.ListToursResponse;
@@ -35,6 +38,8 @@ import com.ygaps.travelapp.model.UserInforResponse;
 import com.ygaps.travelapp.model.VerifyOTPRequest;
 
 import org.json.JSONObject;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -138,4 +143,10 @@ public interface UserService {
 
     @GET("/tour/comment-list")
     Call<CommentResponse>getListCmt(@Header("Authorization") String token, @Query("tourId") int tourId, @Query("pageSize") int pageSize, @Query("pageIndex") int pageIndex);
+
+    @POST("/tour/current-users-coordinate")
+    Call<List<GetLocationResponse>>getLocation(@Header("Authorization") String token, @Body GetLocationRequest request);
+
+    @POST("/tour/add/notification-on-road")
+    Call<JSONObject>createSpeedLimitNotification(@Header("Authorization") String token, @Body CreateNotificationOnRoad request);
 }

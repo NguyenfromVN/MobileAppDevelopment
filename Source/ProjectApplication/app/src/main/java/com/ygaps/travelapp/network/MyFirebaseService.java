@@ -16,8 +16,6 @@ import androidx.core.app.NotificationCompat;
 
 import com.ygaps.travelapp.R;
 import com.ygaps.travelapp.manager.MyApplication;
-import com.ygaps.travelapp.view.HistoryActivity;
-import com.ygaps.travelapp.view.ListTours;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.ygaps.travelapp.view.NotificationTab;
@@ -29,6 +27,8 @@ public class MyFirebaseService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        Log.d(TAG,"\n"+remoteMessage.getData());
+
         // handle a notification payload.
         sendNotification(remoteMessage.getData());
     }
@@ -50,33 +50,71 @@ public class MyFirebaseService extends FirebaseMessagingService {
         String channelId = getString(R.string.project_id);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        String content=messageBody.get("hostId")+" has invited you to tour "+messageBody.get("name");
+        int type=Integer.valueOf(messageBody.get("type"));
+        String content="";
+        NotificationCompat.Builder notificationBuilder;
+        NotificationManager notificationManager;
 
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.ic_launcher_background)
-                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background))
-                        .setContentTitle("Tour Invitation")
-                        .setContentText(content)
-                        .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent1)
-                        .setDefaults(Notification.DEFAULT_ALL)
-                        .setWhen(0)
-                        .setPriority(NotificationManager.IMPORTANCE_HIGH);
+        switch (type){
+            case 3:
+                content="";
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationBuilder =
+                        new NotificationCompat.Builder(this, channelId)
+                                .setSmallIcon(R.drawable.ic_launcher_background)
+                                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background))
+                                .setContentTitle("Speed limit notification on road")
+                                .setContentText(content)
+                                .setAutoCancel(true)
+                                .setSound(defaultSoundUri)
+                                .setDefaults(Notification.DEFAULT_ALL)
+                                .setWhen(0)
+                                .setPriority(NotificationManager.IMPORTANCE_HIGH);
 
-        // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    channelId,
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-            notificationManager.createNotificationChannel(channel);
+                // Since android Oreo notification channel is needed.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel channel = new NotificationChannel(
+                            channelId,
+                            "Channel human readable title",
+                            NotificationManager.IMPORTANCE_DEFAULT);
+
+                    notificationManager.createNotificationChannel(channel);
+                }
+
+                notificationManager.notify(0, notificationBuilder.build());
+                break;
+            case 6:
+                content=messageBody.get("hostId")+" has invited you to tour "+messageBody.get("name");
+
+                notificationBuilder =
+                        new NotificationCompat.Builder(this, channelId)
+                                .setSmallIcon(R.drawable.ic_launcher_background)
+                                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background))
+                                .setContentTitle("Tour Invitation")
+                                .setContentText(content)
+                                .setAutoCancel(true)
+                                .setSound(defaultSoundUri)
+                                .setContentIntent(pendingIntent1)
+                                .setDefaults(Notification.DEFAULT_ALL)
+                                .setWhen(0)
+                                .setPriority(NotificationManager.IMPORTANCE_HIGH);
+
+                notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                // Since android Oreo notification channel is needed.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel channel = new NotificationChannel(
+                            channelId,
+                            "Channel human readable title",
+                            NotificationManager.IMPORTANCE_DEFAULT);
+
+                    notificationManager.createNotificationChannel(channel);
+                }
+
+                notificationManager.notify(0, notificationBuilder.build());
+                break;
         }
-
-        notificationManager.notify(0, notificationBuilder.build());
     }
 }

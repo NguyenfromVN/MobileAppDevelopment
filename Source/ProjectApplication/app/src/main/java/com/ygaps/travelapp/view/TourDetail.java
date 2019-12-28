@@ -511,7 +511,10 @@ public class TourDetail extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.track:
-                //call tracking positions screen
+                Intent intent2 = new Intent(TourDetail.this, TrackTourActivity.class);
+                intent2.putExtra("id",id);
+                intent2.putExtra("token",token);
+                startActivity(intent2);
                 return true;
             case R.id.member:
                 Intent intent1 = new Intent(TourDetail.this, MemberActivity.class);
