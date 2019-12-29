@@ -21,9 +21,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="300dp"
-        app:maxImageSize="30dp"
+        android:layout_marginRight="5dp"
+        app:maxImageSize="20dp"
+        app:fabCustomSize="30dp"
         android:src="@drawable/ic_my_location_black_24dp"
-        app:backgroundTint="#00000000"
+        app:backgroundTint="#ffffff"
         app:elevation="0dp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

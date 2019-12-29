@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import com.ygaps.travelapp.R;
 import com.ygaps.travelapp.model.Item;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class MyCustomListAdapter extends ArrayAdapter<Item> {
@@ -46,10 +48,15 @@ public class MyCustomListAdapter extends ArrayAdapter<Item> {
         String tmp;//temporary string variable
 
         textViewName.setText(item.getName());
-        tmp=item.getStartDate()+" - "+item.getEndDate();
+        if (item.getStartDate()!=null && item.getEndDate()!=null){
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            tmp=df.format(Long.valueOf(item.getStartDate()))+" - "+df.format(Long.valueOf(item.getEndDate()));
+        }
+        else
+            tmp=item.getStartDate()+" - "+item.getEndDate();
         textViewDate.setText(tmp);
-        textViewAdults.setText(String.valueOf(item.getAdults()));
-        tmp=item.getMinCost()+" - "+item.getMaxCost();
+        textViewAdults.setText(String.valueOf(item.getAdults())+" adults");
+        tmp=item.getMinCost()+" - "+item.getMaxCost()+" VND";
         textViewCost.setText(tmp);
         if (item.getAvatar()!=null)
             imageViewAvatar.setImageURI(Uri.parse(item.getAvatar()));

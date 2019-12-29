@@ -1,26 +1,36 @@
 package com.ygaps.travelapp.view;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -51,8 +61,10 @@ import com.ygaps.travelapp.network.UserService;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -76,6 +88,11 @@ public class TrackTourActivity extends AppCompatActivity implements OnMapReadyCa
     private ArrayAdapter<TextNotification> adapter;
     private ListView listView;
     private List<TextNotification> notiList=new ArrayList<>();
+    public final int REQUEST_PERMISSION_CODE=1000;
+    private String pathSave="";
+    private MediaRecorder mediaRecorder;
+    private Button btnRecord, btnStopRecord, btnPlay, btnStop;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,6 +141,156 @@ public class TrackTourActivity extends AppCompatActivity implements OnMapReadyCa
                 createPopupForTextNotification();
             }
         });
+
+        //handler for recording audio button
+        findViewById(R.id.fabRecord).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createPopupRecording();
+            }
+        });
+    }
+
+    public void createPopupRecording(){
+
+        //request runtime permission
+        if (!checkPermissionFromDevice())
+            requestPermission();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Audio recording");
+
+        // set the custom layout
+        final View customLayout = getLayoutInflater().inflate(R.layout.record_popup, null);
+
+        //init view
+        btnPlay=customLayout.findViewById(R.id.btnPlay);
+        btnRecord=customLayout.findViewById(R.id.btnRecord);
+        btnStop=customLayout.findViewById(R.id.btnStopPlay);
+        btnStopRecord=customLayout.findViewById(R.id.btnStopRecord);
+
+        btnRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkPermissionFromDevice()){
+                    pathSave= Environment.getExternalStorageDirectory().getAbsolutePath()
+                            +"/"+ UUID.randomUUID().toString()+"_audio_recorder.3gp";
+                    setupMediaRecorder();
+                    try{
+                        mediaRecorder.prepare();
+                        mediaRecorder.start();
+                    } catch (IOException e){
+                        e.printStackTrace();
+                    }
+
+                    btnPlay.setEnabled(false);
+                    btnStop.setEnabled(false);
+
+                    Toast.makeText(TrackTourActivity.this, "Recoding...", Toast.LENGTH_SHORT).show();
+                } else {
+                    requestPermission();
+                }
+            }
+        });
+
+        btnStopRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaRecorder.stop();
+                btnStopRecord.setEnabled(false);
+                btnPlay.setEnabled(true);
+                btnRecord.setEnabled(true);
+                btnStop.setEnabled(false);
+            }
+        });
+
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnStop.setEnabled(true);
+                btnRecord.setEnabled(false);
+                btnStopRecord.setEnabled(false);
+
+                mediaPlayer=new MediaPlayer();
+                try{
+                    mediaPlayer.setDataSource(pathSave);
+                    mediaPlayer.prepare();
+
+
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+
+                mediaPlayer.start();
+                Toast.makeText(TrackTourActivity.this, "Playing...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnStopRecord.setEnabled(false);
+                btnRecord.setEnabled(true);
+                btnStop.setEnabled(false);
+                btnPlay.setEnabled(true);
+
+                if (mediaPlayer!=null){
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
+                    setupMediaRecorder();
+                }
+            }
+        });
+
+        builder.setView(customLayout);
+
+        //add Cancel button
+        builder.setNeutralButton("CLOSE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //do nothing
+            }
+        });
+
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void setupMediaRecorder(){
+        mediaRecorder=new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        mediaRecorder.setOutputFile(pathSave);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode){
+            case REQUEST_PERMISSION_CODE: {
+                if (grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+            } break;
+        }
+    }
+
+    private void requestPermission(){
+
+        ActivityCompat.requestPermissions(TrackTourActivity.this,new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.RECORD_AUDIO
+        },REQUEST_PERMISSION_CODE);
+    }
+
+    private boolean checkPermissionFromDevice(){
+        int write_external_storage_result= ContextCompat.checkSelfPermission(TrackTourActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int record_audio_result=ContextCompat.checkSelfPermission(TrackTourActivity.this,Manifest.permission.RECORD_AUDIO);
+        return write_external_storage_result== PackageManager.PERMISSION_GRANTED &&
+                record_audio_result==getPackageManager().PERMISSION_GRANTED;
     }
 
     public void createPopupForTextNotification(){
