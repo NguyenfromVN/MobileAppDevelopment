@@ -35,8 +35,8 @@
         android:layout_marginRight="12dp"
         app:maxImageSize="40dp"
         android:src="@drawable/ic_record_voice_over_black_24dp"
-        app:backgroundTint="#00000000"
-        app:elevation="0dp"/>
+        app:backgroundTint="#ffffff"
+        app:elevation="0dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabText"
@@ -44,9 +44,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:maxImageSize="40dp"
         android:src="@drawable/ic_textsms_black_24dp"
-        app:backgroundTint="#00000000"
-        app:elevation="0dp"/>
+        app:backgroundTint="#ffffff"
+        app:elevation="0dp"
+        app:maxImageSize="40dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

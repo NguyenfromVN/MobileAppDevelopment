@@ -51,39 +51,13 @@ public class MyFirebaseService extends FirebaseMessagingService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         int type=Integer.valueOf(messageBody.get("type"));
-        String content="";
+        String content;
         NotificationCompat.Builder notificationBuilder;
         NotificationManager notificationManager;
 
         switch (type){
             case 3:
-                content="";
 
-                notificationBuilder =
-                        new NotificationCompat.Builder(this, channelId)
-                                .setSmallIcon(R.drawable.ic_launcher_background)
-                                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background))
-                                .setContentTitle("Speed limit notification on road")
-                                .setContentText(content)
-                                .setAutoCancel(true)
-                                .setSound(defaultSoundUri)
-                                .setDefaults(Notification.DEFAULT_ALL)
-                                .setWhen(0)
-                                .setPriority(NotificationManager.IMPORTANCE_HIGH);
-
-                notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-                // Since android Oreo notification channel is needed.
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    NotificationChannel channel = new NotificationChannel(
-                            channelId,
-                            "Channel human readable title",
-                            NotificationManager.IMPORTANCE_DEFAULT);
-
-                    notificationManager.createNotificationChannel(channel);
-                }
-
-                notificationManager.notify(0, notificationBuilder.build());
                 break;
             case 6:
                 content=messageBody.get("hostId")+" has invited you to tour "+messageBody.get("name");
